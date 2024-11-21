@@ -1,21 +1,13 @@
 /* eslint-disable react/prop-types */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AlertTriangle, ChevronRight, ChevronLeft } from "lucide-react";
 
 export default function DevAlert({
   message = "This site is still in development. It may contain bugs or issues.",
 }) {
-  const [isVisible, setIsVisible] = useState(true);
   const [isExpanded, setIsExpanded] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(false), 10000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!isVisible) return null;
 
   return (
     <div
@@ -45,7 +37,12 @@ export default function DevAlert({
                 </h2>
               </div>
             </div>
-            <p className="text-sm text-white leading-snug">{message}</p>
+            <div className="flex flex-col gap-2">
+              <p className="text-md text-yellow-500 font-semibold text-center">
+                For best experience view in desktop mode.
+              </p>
+              <p className="text-sm text-white leading-snug">{message}</p>
+            </div>
           </div>
         </div>
       </div>
