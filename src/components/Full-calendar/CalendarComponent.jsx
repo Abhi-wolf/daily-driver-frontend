@@ -58,7 +58,6 @@ export default function CalendarComponent() {
     setEvents((prevEvents) =>
       prevEvents.map((ev) => (ev.id === event.id ? { ...ev, start, end } : ev))
     );
-    console.log("Event dropped", data);
   };
 
   return (

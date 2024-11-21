@@ -39,7 +39,6 @@ function UpdatePassword() {
   });
 
   const updateUserProfile = async (data) => {
-    console.log(data);
     const { confirmPassword, ...newData } = data;
 
     try {

@@ -53,7 +53,7 @@ function AddOrEditProjectModel({
 
       onClose(false);
     } catch (error) {
-      console.log("AddFileOrFolder error = ", error);
+      toast.error("Something went wrong");
     }
   };
 

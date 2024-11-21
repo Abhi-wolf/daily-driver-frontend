@@ -24,8 +24,6 @@ export async function getUserProfile() {
 }
 
 export async function updateProfile({ data }) {
-  console.log(data);
-
   try {
     const res = await fetch(`${apiURL}/user/`, {
       method: "PATCH",
@@ -35,14 +33,11 @@ export async function updateProfile({ data }) {
       body: JSON.stringify(data),
       credentials: "include",
     });
-    console.log(res);
     if (!res.ok) {
       const errorData = await res.json();
-      console.log(errorData);
       throw new Error(errorData.message || "Profile update failed");
     }
-    const temp = await res.json();
-    console.log(temp);
+    // const temp = await res.json();
   } catch (err) {
     if (err.response) {
       console.error(err.response.data.message);

@@ -5,6 +5,7 @@ import { StarterKit } from "@tiptap/starter-kit";
 import TipTapMenuBar from "./TipTapMenuBar";
 import { Button } from "../ui/button";
 import { useFileUpdateContent } from "../../hooks/fileExplorer/useFile";
+import { toast } from "sonner";
 
 const TextEditor = ({ note, fileId }) => {
   const [editable, setEditable] = useState(false);
@@ -33,11 +34,11 @@ const TextEditor = ({ note, fileId }) => {
     updateFileContent(
       { data, fileId },
       {
-        onSuccess: (data) => {
-          console.log("successfully updated = ", data);
+        onSuccess: () => {
+          toast.success("Successfully updated");
         },
         onError: (err) => {
-          console.error(err);
+          toast.error(err?.message || "Something went wrong");
         },
       }
     );

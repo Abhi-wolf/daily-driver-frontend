@@ -1,8 +1,6 @@
 const apiURL = import.meta.env.VITE_BASE_URL;
 
 export async function getUserTodos(filterObj) {
-  console.log(filterObj);
-
   let url = `${apiURL}/todos?`;
   const queryParams = new URLSearchParams();
 
@@ -22,8 +20,6 @@ export async function getUserTodos(filterObj) {
     url += `${queryParams.toString()}`;
   }
 
-  console.log("URL = ", url);
-
   try {
     const res = await fetch(url, {
       method: "GET",
@@ -40,7 +36,6 @@ export async function getUserTodos(filterObj) {
     }
 
     const data = await res.json();
-    console.log(data);
     return data?.data;
   } catch (err) {
     if (err.response) {

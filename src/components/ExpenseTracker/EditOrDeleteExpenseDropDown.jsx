@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { Edit, EllipsisVertical, Trash2 } from "lucide-react";
+import { Edit, EllipsisVertical } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -9,31 +9,14 @@ import {
 } from "../ui/dropdown-menu";
 
 import { useState } from "react";
-import { toast } from "sonner";
-import { useNavigate } from "react-router";
 import ExpenseForm from "./ExpenseForm";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 
 function EditOrDeleteExpenseDropDown({ expense }) {
   const [openExpenseEditForm, setOpenExpenseEditForm] = useState(false);
   const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
-  const navigate = useNavigate();
 
   const handleDeleteExpense = async () => {
-    // deleteProject(
-    //   { projectId },
-    //   {
-    //     onSuccess: () => {
-    //       toast.success("Project successfully deleted");
-    //       setConfirmDeleteDialog(false);
-    //       navigate("/tasksmanager");
-    //     },
-    //     onError: (error) => {
-    //       console.log(error);
-    //       toast.error(error?.message);
-    //     },
-    //   }
-    // );
     setOpenConfirmDeleteDialog(false);
   };
 

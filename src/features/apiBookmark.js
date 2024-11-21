@@ -40,8 +40,6 @@ export async function addBookmark({ newBookmark }) {
       credentials: "include",
     });
 
-    console.log(res);
-
     if (!res.ok) {
       const errorData = await res.json();
       console.error("errorData = ", errorData);

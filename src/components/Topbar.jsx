@@ -38,7 +38,7 @@ function Topbar() {
       removeUser();
       toast.success("Successfully logged out");
     } catch (error) {
-      console.log(error);
+      toast.error(error?.message || "Something went wrong");
     }
   };
 

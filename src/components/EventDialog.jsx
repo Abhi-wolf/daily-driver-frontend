@@ -46,17 +46,15 @@ export default function AddEventDialog({
       addEvent(
         { newEvent },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             toast.success("Event Added successfully");
           },
           onError: (err) => {
             toast.error(err.message);
-            console.log(err.message);
           },
         }
       );
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong.");
     }
 

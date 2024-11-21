@@ -85,7 +85,7 @@ function AddFileOrFolder({ isOpen, onClose, isFolder }) {
         );
       }
     } catch (error) {
-      console.log("AddFileOrFolder error = ", error);
+      // console.log("AddFileOrFolder error = ", error);
     }
   };
 

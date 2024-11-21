@@ -51,7 +51,6 @@ export const uploadFile = async (file) => {
     const url = await getDownloadURL(fileRef);
     return url;
   } catch (error) {
-    console.log(error);
     throw new Error(error?.message);
   }
 };

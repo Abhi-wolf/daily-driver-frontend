@@ -43,7 +43,6 @@ function AddOrEditBookMark({ bookmark, children }) {
   const labels = watch("labels");
 
   const handleAddBookmark = async (newBookmark) => {
-    console.log("Bookmark newBookmark:", newBookmark);
     if (!bookmark) {
       try {
         addBookmark(
@@ -104,11 +103,9 @@ function AddOrEditBookMark({ bookmark, children }) {
   const handleRemoveLabel = (index) => (e) => {
     e.preventDefault();
     const currentLabels = getValues("labels") || [];
-    console.log("CURRENT LABELS = ", currentLabels);
 
     const updatedLabels = currentLabels.filter((_, i) => i !== index);
 
-    console.log("UPDATED LABELS = ", updatedLabels);
     setValue("labels", updatedLabels);
   };
 

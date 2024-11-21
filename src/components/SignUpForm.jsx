@@ -37,7 +37,6 @@ export function SignUpForm() {
       { data },
       {
         onSuccess: (data) => {
-          console.log("user = ", data);
           if (data?.user?.email) {
             setUser(data?.user);
             toast.success("Signed up successfully");

@@ -37,7 +37,7 @@ export default function ResetPasswordForm() {
           navigate("/login");
         },
         onError: (err) => {
-          console.log(err.message);
+          toast.error(err?.message || "Something went wrong");
         },
       }
     );

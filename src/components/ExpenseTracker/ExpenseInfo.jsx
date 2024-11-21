@@ -10,8 +10,6 @@ function ExpenseInfo() {
   const [addBudget, setAddBudget] = useState(false);
   const { expenseSummary, isPending, isError } = useGetExpenseSummary();
 
-  console.log(expenseSummary);
-
   return (
     <div className="flex justify-around gap-8 m-4 p-4 flex-wrap">
       <div className="border-2 border-gray-100 rounded-lg w-[300px] h-[140px] shadow-lg p-4 flex flex-col justify-around">
