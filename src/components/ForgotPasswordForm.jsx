@@ -9,7 +9,6 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useForgotPassword } from "../hooks/auth/useForgotPassword";
@@ -20,7 +19,6 @@ export default function ForgotpasswordForm() {
     register,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
   const { forgotPassword, isPending } = useForgotPassword();
 
   const onSubmit = async (data) => {
@@ -55,12 +53,18 @@ export default function ForgotpasswordForm() {
                 type="email"
                 disabled={isPending}
                 placeholder="m@example.com"
-                {...register("email", { required: true })}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email address",
+                  },
+                })}
               />
 
               {errors.email && (
-                <p className="text-red-400 text-sm pl-4 pt-1">
-                  Email is required.
+                <p className="text-red-500 text-xs pl-2 pt-1">
+                  {errors.email.message}
                 </p>
               )}
             </div>

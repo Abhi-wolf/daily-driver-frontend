@@ -30,15 +30,13 @@ function Expenses() {
         startDate: startOfMonth,
         endDate: endOfMonth,
       });
-
-      console.log("Setting default dates:", { startOfMonth, endOfMonth });
     }
   }, [startDate, endDate]);
 
   return (
-    <section className="w-full m-2 flex flex-col gap-6 overflow-y-auto relative">
+    <section className="w-full m-1 md:m-2 flex flex-col gap-6 overflow-y-auto relative">
       <ExpenseInfo />
-      <div className="flex justify-around">
+      <div className="flex flex-wrap gap-4 justify-around">
         <BarChart />
         <PieChart />
       </div>

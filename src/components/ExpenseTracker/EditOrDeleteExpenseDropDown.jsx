@@ -7,26 +7,19 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
+
 import { useState } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import ExpenseForm from "./ExpenseForm";
+import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 
 function EditOrDeleteExpenseDropDown({ expense }) {
   const [openExpenseEditForm, setOpenExpenseEditForm] = useState(false);
-  const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
+  const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
   const navigate = useNavigate();
 
-  const handleDeleteProject = async () => {
-    console.error("HANDLE DELETE");
-
+  const handleDeleteExpense = async () => {
     // deleteProject(
     //   { projectId },
     //   {
@@ -41,7 +34,7 @@ function EditOrDeleteExpenseDropDown({ expense }) {
     //     },
     //   }
     // );
-    setConfirmDeleteDialog(false);
+    setOpenConfirmDeleteDialog(false);
   };
 
   return (
@@ -52,14 +45,13 @@ function EditOrDeleteExpenseDropDown({ expense }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex flex-col gap-2 p-4">
-        <Button
-          variant="destructive"
-          className="flex gap-2 justify-between"
-          onClick={() => setConfirmDeleteDialog(true)}
-        >
-          Delete <Trash2 className="w-4 h-4" />
-        </Button>
-
+        <ConfirmDeleteDialog
+          onClose={setOpenConfirmDeleteDialog}
+          open={openConfirmDeleteDialog}
+          isPending={false}
+          handleDelete={handleDeleteExpense}
+          message="Once deleted the label cannot be recovered"
+        />
         <Button
           variant="outline"
           className="flex gap-2 justify-between"
@@ -77,42 +69,7 @@ function EditOrDeleteExpenseDropDown({ expense }) {
           onClose={setOpenExpenseEditForm}
         />
       )}
-      {confirmDeleteDialog && (
-        <ConfirmDeleteDialog
-          onClose={setConfirmDeleteDialog}
-          isOpen={confirmDeleteDialog}
-          handleDeleteProject={handleDeleteProject}
-        />
-      )}
     </DropdownMenu>
-  );
-}
-
-function ConfirmDeleteDialog({
-  onClose,
-  isOpen,
-  handleDeleteProject,
-  isPending,
-}) {
-  return (
-    <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false}>
-      <DialogContent className="sm:max-w-[425px] p-8">
-        <DialogHeader>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogDescription>
-            Once deleted the expense cannot be recovered
-          </DialogDescription>
-        </DialogHeader>
-        <Button
-          type="submit"
-          variant="destructive"
-          disabled={isPending}
-          onClick={handleDeleteProject}
-        >
-          Confirm Delete
-        </Button>
-      </DialogContent>
-    </Dialog>
   );
 }
 

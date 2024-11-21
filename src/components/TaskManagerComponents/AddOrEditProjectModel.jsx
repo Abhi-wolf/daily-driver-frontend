@@ -41,7 +41,7 @@ function AddOrEditProjectModel({
       addNewProject(
         { newProject },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             toast.success("Project created successfully");
             onClose(false);
           },

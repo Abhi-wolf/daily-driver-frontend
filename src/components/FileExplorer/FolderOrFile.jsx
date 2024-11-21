@@ -7,39 +7,33 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "./ui/context-menu";
+} from "../ui/context-menu";
 import {
   ChevronDown,
   ChevronRight,
   File,
   FolderOpen,
   Pencil,
-  Trash2,
 } from "lucide-react";
 import { Pencil2Icon } from "@radix-ui/react-icons";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "./ui/dialog";
-import { Button } from "./ui/button";
+
+import { Button } from "../ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useCreateNewFile,
   useDeleteFile,
   useRenameFile,
-} from "../hooks/fileExplorer/useFile";
+} from "../../hooks/fileExplorer/useFile";
 import {
   useCreateNewFolder,
   useDeleteFolder,
   useGetFolder,
   useRenameFolder,
-} from "../hooks/fileExplorer/useFolder";
+} from "../../hooks/fileExplorer/useFolder";
+import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 
 function FolderOrFile({ folder }) {
   const [deleteFileFolder, setDeleteFileFolder] = useState(false);
@@ -53,6 +47,9 @@ function FolderOrFile({ folder }) {
     visible: false,
     isFolder: null,
   });
+
+  const { deleteFolder, isDeletingFolder } = useDeleteFolder();
+  const { deleteFile } = useDeleteFile();
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -222,6 +219,53 @@ function FolderOrFile({ folder }) {
     }
   }
 
+  // delete file and folder
+  const handleDeleteFileOrFolder = (e) => {
+    e.preventDefault();
+
+    const isFolder = folder.type === "folder";
+    const id = folder._id;
+    const parent = folder?.parentFolder;
+
+    if (isFolder) {
+      deleteFolder(
+        { folderId: id },
+        {
+          onSuccess: () => {
+            toast.success("Folder deleted successfully");
+            setDeleteFileFolder(false);
+
+            if (parent)
+              queryClient.invalidateQueries({ queryKey: ["folder", parent] });
+            else queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+          },
+          onError: (err) => {
+            setDeleteFileFolder(false);
+            toast.error(err.message);
+          },
+        }
+      );
+    } else {
+      deleteFile(
+        { fileId: id },
+        {
+          onSuccess: () => {
+            toast.success("File deleted successfully");
+            setDeleteFileFolder(false);
+
+            if (parent)
+              queryClient.invalidateQueries({ queryKey: ["folder", parent] });
+            else queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+          },
+          onError: (err) => {
+            setDeleteFileFolder(false);
+            toast.error(err.message);
+          },
+        }
+      );
+    }
+  };
+
   return (
     <div className="w-full max-w-full overflow-y-auto px-2">
       <ContextMenu>
@@ -260,7 +304,7 @@ function FolderOrFile({ folder }) {
                     />
                   </div>
                 ) : (
-                  <p className="overflow-hidden">{folder?.folderName}</p>
+                  <p className="truncate max-w-full">{folder?.folderName}</p>
                 )}
               </div>
               <div className={`${expand ? "block" : "hidden"} pl-6`}>
@@ -325,7 +369,7 @@ function FolderOrFile({ folder }) {
             </div>
           )}
         </ContextMenuTrigger>
-        <ContextMenuContent className="w-64">
+        <ContextMenuContent className="">
           {folder?.type === "folder" && (
             <ContextMenuItem
               inset
@@ -351,105 +395,30 @@ function FolderOrFile({ folder }) {
           {folder?.type === "folder" && <ContextMenuSeparator />}
 
           <ContextMenuItem
-            inset
-            className="flex gap-4"
+            className="flex items-center justify-center"
             onClick={(e) =>
               handleRename(e, folder?.type === "folder" ? true : false)
             }
           >
-            <Pencil className="w-4 h-4" />
-            <span> Rename</span>
+            <Button className="flex gap-3">
+              <Pencil className="w-4 h-4" /> Rename
+            </Button>
           </ContextMenuItem>
 
           <ContextMenuSeparator />
-          <ContextMenuItem
-            inset
-            className="flex gap-4 text-red-600 font-semibold"
-            onClick={() => setDeleteFileFolder(!deleteFileFolder)}
-          >
-            <Trash2 className="w-4 h-4 " />
-            <span> Delete</span>
+
+          <ContextMenuItem className="flex items-center justify-center">
+            <ConfirmDeleteDialog
+              onClose={setDeleteFileFolder}
+              open={deleteFileFolder}
+              isPending={isDeletingFolder}
+              handleDelete={handleDeleteFileOrFolder}
+              message="Once deleted the label cannot be recovered"
+            />
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
-
-      {deleteFileFolder && (
-        <ConfirmDeleteDianlog
-          isOpen={deleteFileFolder}
-          onClose={setDeleteFileFolder}
-          id={folder._id}
-          isFolder={folder.type === "folder"}
-          parent={folder.parentFolder}
-        />
-      )}
     </div>
-  );
-}
-
-function ConfirmDeleteDianlog({ onClose, isOpen, id, isFolder, parent }) {
-  const queryClient = useQueryClient();
-  const { deleteFolder, isDeletingFolder } = useDeleteFolder();
-  const { deleteFile } = useDeleteFile();
-
-  const handleSubmit = () => {
-    if (isFolder) {
-      deleteFolder(
-        { folderId: id },
-        {
-          onSuccess: () => {
-            toast.success("Folder deleted successfully");
-            onClose(false);
-
-            if (parent)
-              queryClient.invalidateQueries({ queryKey: ["folder", parent] });
-            else queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
-          },
-          onError: (err) => {
-            onClose(false);
-            toast.error(err.message);
-          },
-        }
-      );
-    } else {
-      deleteFile(
-        { fileId: id },
-        {
-          onSuccess: () => {
-            toast.success("File deleted successfully");
-            onClose(false);
-
-            if (parent)
-              queryClient.invalidateQueries({ queryKey: ["folder", parent] });
-            else queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
-          },
-          onError: (err) => {
-            onClose(false);
-            toast.error(err.message);
-          },
-        }
-      );
-    }
-  };
-
-  return (
-    <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false}>
-      <DialogContent className="sm:max-w-[425px] p-8">
-        <DialogHeader>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogDescription>
-            Once deleted the file or folder cannot be recovered
-          </DialogDescription>
-        </DialogHeader>
-        <Button
-          type="submit"
-          variant="destructive"
-          disabled={isDeletingFolder}
-          onClick={handleSubmit}
-        >
-          Confirm Delete
-        </Button>
-      </DialogContent>
-    </Dialog>
   );
 }
 

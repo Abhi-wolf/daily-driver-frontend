@@ -7,7 +7,7 @@ export function useUpdateEvent() {
   const { mutate: updateEvent, isUpdatingEvent } = useMutation({
     mutationFn: updateEventApi,
     onSuccess: () => {
-      queryClient.invalidateQueries(["events"]);
+      queryClient.invalidateQueries({ queryKey: ["events"] });
     },
   });
 

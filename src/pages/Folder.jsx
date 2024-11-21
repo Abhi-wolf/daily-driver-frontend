@@ -15,7 +15,9 @@ function Folder() {
   return (
     <div className="flex flex-wrap gap-4 w-full min-h-full p-4 mt-8">
       {isPending ? (
-        <LargeSpinner />
+        <div className="w-full min-h-full flex justify-center items-center ">
+          <LargeSpinner />
+        </div>
       ) : (
         <>
           {folder?.items?.map((item) => {
@@ -25,7 +27,7 @@ function Folder() {
           })}
 
           {folder?.items?.length === 0 && (
-            <DataNotFound message="Folder is empty" size="2xl" />
+            <DataNotFound message="Folder is empty" size="xl" />
           )}
         </>
       )}

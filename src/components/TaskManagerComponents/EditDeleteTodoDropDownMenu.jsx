@@ -7,39 +7,36 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
 import { useState } from "react";
 import { toast } from "sonner";
 import AddOrEditTask from "../AddOrEditTask";
 import { useDeleteTodo } from "../../hooks/todos/useDeleteTodo";
+import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 
 function EditDeleteTodoDropDownMenu({ todo }) {
-  const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
+  const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
   const [editTodoDialog, setEditTodoDialog] = useState(false);
   const { deleteTodo, isDeletingTodo } = useDeleteTodo();
 
-  const handleDeleteProject = async () => {
-    console.error("HANDLE DELETE");
-
-    deleteTodo(
-      { todoId: todo._id },
-      {
-        onSuccess: () => {
-          toast.success("Task successfully deleted");
-          setConfirmDeleteDialog(false);
-        },
-        onError: (error) => {
-          toast.error(error?.message);
-        },
-      }
-    );
-    setConfirmDeleteDialog(false);
+  const handleDeleteTodo = async () => {
+    try {
+      deleteTodo(
+        { todoId: todo._id },
+        {
+          onSuccess: () => {
+            toast.success("Task successfully deleted");
+          },
+          onError: (error) => {
+            toast.error(error?.message);
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    } finally {
+      setOpenConfirmDeleteDialog(false);
+    }
   };
 
   return (
@@ -50,62 +47,24 @@ function EditDeleteTodoDropDownMenu({ todo }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex flex-col gap-2 p-4">
-        <Button
-          variant="destructive"
-          onClick={() => setConfirmDeleteDialog(true)}
-        >
-          Delete
-        </Button>
+        <ConfirmDeleteDialog
+          onClose={setOpenConfirmDeleteDialog}
+          open={openConfirmDeleteDialog}
+          isPending={isDeletingTodo}
+          handleDelete={handleDeleteTodo}
+          message="Once deleted the project cannot be recovered"
+        />
         <Button variant="outline" onClick={() => setEditTodoDialog(true)}>
-          {" "}
           Edit
         </Button>
-        {editTodoDialog && (
-          <AddOrEditTask
-            isOpen={editTodoDialog}
-            onClose={setEditTodoDialog}
-            todo={todo}
-          />
-        )}
-      </DropdownMenuContent>
 
-      {confirmDeleteDialog && (
-        <ConfirmDeleteDialog
-          onClose={setConfirmDeleteDialog}
-          isOpen={confirmDeleteDialog}
-          isPending={isDeletingTodo}
-          handleDeleteProject={handleDeleteProject}
+        <AddOrEditTask
+          isOpen={editTodoDialog}
+          onClose={setEditTodoDialog}
+          todo={todo}
         />
-      )}
+      </DropdownMenuContent>
     </DropdownMenu>
-  );
-}
-
-function ConfirmDeleteDialog({
-  onClose,
-  isOpen,
-  handleDeleteProject,
-  isPending,
-}) {
-  return (
-    <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false}>
-      <DialogContent className="sm:max-w-[425px] p-8">
-        <DialogHeader>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogDescription>
-            Once deleted the project cannot be recovered
-          </DialogDescription>
-        </DialogHeader>
-        <Button
-          type="submit"
-          variant="destructive"
-          disabled={isPending}
-          onClick={handleDeleteProject}
-        >
-          Confirm Delete
-        </Button>
-      </DialogContent>
-    </Dialog>
   );
 }
 

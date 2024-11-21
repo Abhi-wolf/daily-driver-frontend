@@ -17,6 +17,7 @@ import EditOrDeleteLabelDropDown from "./EditOrDeleteLabelDropDown";
 import AddOrEditTask from "../AddOrEditTask";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Button } from "../ui/button";
 
 function TaskManagerSideBar() {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ function TaskManagerSideBar() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
 
+  const filter = searchParams.get("filter");
+
   function handleChangeFilter(value) {
     if (location.pathname === "/tasksmanager/todos") {
       setSearchParams({ filter: value });
@@ -37,45 +40,65 @@ function TaskManagerSideBar() {
   }
 
   return (
-    <div className="block w-[300px] min-h-full border-2 border-gray-400  p-4 pt-8 rounded-r-3xl overflow-y-auto">
+    <div className="block w-[260px] md:w-[300px] min-h-full border-2 border-gray-400  p-1 md:p-4 pt-8 rounded-r-3xl overflow-y-auto ">
       <div className="flex flex-col gap-10 h-full overflow-y-auto">
         {/* Upper Part */}
-        <ul className="flex flex-col   ">
-          <li
-            onClick={() => setAddNewTaskModal(true)}
-            className="list-none flex gap-4 items-center text-orange-500 font-semibold cursor-pointer hover:bg-orange-200 p-2 rounded-3xl"
-          >
-            <PlusCircle className="h-6 w-6" />{" "}
-            <span className="text-lg">Add Task</span>
+        <ul className="flex flex-col  gap-1 md:gap-2">
+          <li>
+            <AddOrEditTask>
+              <Button
+                className="w-full gap-2 md:gap-4 flex flex-row justify-start cursor-pointer rounded-3xl p-2 bg-orange-300 hover:bg-orange-300"
+                variant="ghost"
+              >
+                <PlusCircle className="h-6 w-6" />{" "}
+                <span className="text-lg">Add Task</span>
+              </Button>
+            </AddOrEditTask>
           </li>
           <li
             onClick={() => handleChangeFilter("today")}
-            className="list-none flex gap-4 items-center cursor-pointer hover:bg-orange-200 p-2 rounded-3xl"
+            className={`list-none flex gap-4 items-center cursor-pointer  p-2 rounded-3xl ${
+              filter === "today"
+                ? "text-green-500 bg-gray-200"
+                : "hover:bg-orange-200"
+            }`}
           >
             <CalendarClock className="h-5 w-5" />{" "}
             <span className="text-lg">Today</span>
           </li>
           <li
             onClick={() => handleChangeFilter("this-week")}
-            className="list-none flex gap-4 items-center cursor-pointer hover:bg-orange-200 p-2 rounded-3xl"
+            className={`list-none flex gap-4 items-center cursor-pointer  p-2 rounded-3xl ${
+              filter === "this-week"
+                ? "text-green-500 bg-gray-200"
+                : "hover:bg-orange-200"
+            }`}
           >
             <CalendarDaysIcon className="h-5 w-5" />{" "}
             <span className="text-lg">This week</span>
           </li>
           <li
             onClick={() => handleChangeFilter("next-week")}
-            className="list-none flex gap-4 items-center cursor-pointer hover:bg-orange-200 p-2 rounded-3xl"
+            className={`list-none flex gap-4 items-center cursor-pointer  p-2 rounded-3xl ${
+              filter === "next-week"
+                ? "text-green-500 bg-gray-200"
+                : "hover:bg-orange-200"
+            }`}
           >
             <CalendarDaysIcon className="h-5 w-5" />{" "}
             <span className="text-lg">Next Week</span>
           </li>
-
-          {addNewTaskModal && (
-            <AddOrEditTask
-              isOpen={addNewTaskModal}
-              onClose={setAddNewTaskModal}
-            />
-          )}
+          <li
+            onClick={() => handleChangeFilter("all-todos")}
+            className={`list-none flex gap-4 items-center cursor-pointer  p-2 rounded-3xl ${
+              filter === "all-todos"
+                ? "text-green-500 bg-gray-200"
+                : "hover:bg-orange-200"
+            }`}
+          >
+            <CalendarDaysIcon className="h-5 w-5" />{" "}
+            <span className="text-lg">All Todos</span>
+          </li>
         </ul>
 
         {/* labels */}

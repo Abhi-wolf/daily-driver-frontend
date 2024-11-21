@@ -13,7 +13,9 @@ function File() {
     <div className="m-2 ">
       <div className="w-full">
         {isPending ? (
-          <MediumSpinner />
+          <div className="w-full min-h-full flex justify-center items-center ">
+            <MediumSpinner />
+          </div>
         ) : (
           <TextEditor fileId={fileId} note={file?.data} />
         )}

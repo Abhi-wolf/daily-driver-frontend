@@ -129,7 +129,7 @@ export async function deleteExpense({ expenseId }) {
       const errorData = await res.json();
       throw new Error(errorData.message || "Something went wrong");
     }
-    const data = await res.json();
+    // const data = await res.json();
     return expenseId;
   } catch (err) {
     if (err.response) {

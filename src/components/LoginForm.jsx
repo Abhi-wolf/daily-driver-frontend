@@ -48,7 +48,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="mx-auto min-w-lg">
+    <Card className="mx-auto min-w-lg  border-0">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
@@ -65,12 +65,18 @@ export function LoginForm() {
                 type="email"
                 disabled={isPending}
                 placeholder="m@example.com"
-                {...register("email", { required: true })}
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email address",
+                  },
+                })}
               />
 
               {errors.email && (
-                <p className="text-red-400 text-sm pl-4 pt-1">
-                  Name is required.
+                <p className="text-red-500 text-sm pl-2 pt-1">
+                  {errors.email.message}
                 </p>
               )}
             </div>
@@ -92,7 +98,9 @@ export function LoginForm() {
                   id="password"
                   className="w-full"
                   disabled={isPending}
-                  {...register("password", { required: true })}
+                  {...register("password", {
+                    required: true,
+                  })}
                 />
 
                 <span
@@ -103,8 +111,8 @@ export function LoginForm() {
                 </span>
               </div>
               {errors.password && (
-                <p className="text-red-400 text-sm pl-4 pt-1">
-                  Password is required
+                <p className="text-red-500 text-sm pl-2 pt-1">
+                  {errors.password.message}
                 </p>
               )}
             </div>
@@ -112,9 +120,9 @@ export function LoginForm() {
           <Button type="submit" className="w-full" disabled={isPending}>
             Login
           </Button>
-          {/* <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full">
             Login with Google
-          </Button> */}
+          </Button>
         </form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}

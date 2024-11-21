@@ -19,6 +19,7 @@ import InitialExplorer from "./pages/InitialExplorer";
 import RecycleBin from "./pages/RecycleBin";
 import Expenses from "./pages/Expenses";
 import PageNotFound from "./pages/PageNotFound";
+import Bookmarks from "./pages/Bookmarks";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
             <Route path="folder/:folderId" element={<Folder />} />
           </Route>
           <Route path="/music" element={<Music />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/tasksmanager" element={<TaskManager />}>
             <Route

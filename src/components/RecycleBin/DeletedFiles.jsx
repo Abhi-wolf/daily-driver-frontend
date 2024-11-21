@@ -29,7 +29,7 @@ function DeletedFiles({ setIsRecycleBinEmpty }) {
       {
         onSuccess: () => {
           toast.success("File restored successfully");
-          queryClient.invalidateQueries("deletedFiles");
+          queryClient.invalidateQueries({ queryKey: ["deletedFiles"] });
         },
         onError: () => {
           toast.error("Something went wrong");
@@ -46,8 +46,9 @@ function DeletedFiles({ setIsRecycleBinEmpty }) {
       {
         onSuccess: () => {
           toast.success("Folder deleted successfully");
-          queryClient.invalidateQueries("deletedFolders");
-          queryClient.invalidateQueries("deletedFiles");
+          queryClient.invalidateQueries({
+            queryKey: ["deletedFolders", "deletedFiles"],
+          });
         },
         onError: () => {
           toast.error("Something went wrong");

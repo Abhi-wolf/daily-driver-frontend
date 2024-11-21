@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import DataNotFound from "../components/DataNotFound";
 import FileBox from "../components/FileExplorer/common/FileBox";
 import FolderBox from "../components/FileExplorer/common/FolderBox";
@@ -21,7 +20,9 @@ function InitialExplorer() {
   return (
     <div className="flex flex-wrap gap-4 w-full p-4 mt-8">
       {isPending ? (
-        <LargeSpinner />
+        <div className="w-full min-h-full flex justify-center items-center">
+          <LargeSpinner />
+        </div>
       ) : (
         <>
           {explorerData?.map((item) => {
@@ -31,7 +32,7 @@ function InitialExplorer() {
           })}
 
           {explorerData?.length === 0 && (
-            <DataNotFound message="No files and folders found" size="6xl" />
+            <DataNotFound message="No files and folders found" size="2xl" />
           )}
         </>
       )}

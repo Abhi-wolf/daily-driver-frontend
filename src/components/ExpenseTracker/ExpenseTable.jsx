@@ -44,9 +44,9 @@ function ExpenseTable() {
   }, [startDate, endDate]);
 
   return (
-    <div className="m-8 flex flex-col gap-2">
+    <div className="m-2 md:m-8 flex flex-col gap-2">
       {/* Header with Date Selectors */}
-      <div className="flex justify-between">
+      <div className="flex flex-wrap gap-2 justify-between">
         <h2 className="text-2xl font-semibold italic underline underline-offset-1 decoration-wavy decoration-1">
           Spendings
         </h2>

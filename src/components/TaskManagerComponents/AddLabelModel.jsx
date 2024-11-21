@@ -31,7 +31,7 @@ function AddLabelModel() {
       addNewLabel(
         { newLabel },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             toast.success("Label added successfully");
             onClose(false);
           },

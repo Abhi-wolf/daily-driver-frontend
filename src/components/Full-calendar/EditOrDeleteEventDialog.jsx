@@ -53,19 +53,22 @@ export default function EditOrDeleteEventDialog({ isOpen, onClose, event }) {
       updateEvent(
         { eventId, newEvent },
         {
-          onSuccess: (newEvent) => {
+          onSuccess: () => {
             toast.success("Event updated successfully");
           },
           onError: (err) => {
             toast.error(err.message);
           },
+          onSettled: () => {
+            onClose(false);
+          },
         }
       );
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
+      onClose(false);
       toast.error("Something went wrong.");
     }
-
-    onClose(!isOpen);
   };
 
   const handleDelete = (e) => {
@@ -81,12 +84,14 @@ export default function EditOrDeleteEventDialog({ isOpen, onClose, event }) {
         {
           onSuccess: () => {
             toast.success("Event deleted successfully");
-            onClose(false);
           },
         }
       );
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong.");
+    } finally {
+      onClose(false);
     }
   };
 

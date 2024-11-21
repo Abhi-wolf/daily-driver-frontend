@@ -1,8 +1,31 @@
 const apiURL = import.meta.env.VITE_BASE_URL;
 
-export async function getUserTodos(filter) {
+export async function getUserTodos(filterObj) {
+  console.log(filterObj);
+
+  let url = `${apiURL}/todos?`;
+  const queryParams = new URLSearchParams();
+
+  if (filterObj?.filter) {
+    queryParams.append("filter", filterObj.filter);
+  }
+
+  if (filterObj?.startDate) {
+    queryParams.append("startDate", filterObj.startDate);
+  }
+
+  if (filterObj?.endDate) {
+    queryParams.append("endDate", filterObj.endDate);
+  }
+
+  if (queryParams.toString()) {
+    url += `${queryParams.toString()}`;
+  }
+
+  console.log("URL = ", url);
+
   try {
-    const res = await fetch(`${apiURL}/todos?filter=${filter}`, {
+    const res = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -17,6 +40,7 @@ export async function getUserTodos(filter) {
     }
 
     const data = await res.json();
+    console.log(data);
     return data?.data;
   } catch (err) {
     if (err.response) {
@@ -69,7 +93,6 @@ export async function deleteTodo({ todoId }) {
       const errorData = await res.json();
       throw new Error(errorData.message || "Something went wrong");
     }
-    const data = await res.json();
     return todoId;
   } catch (err) {
     if (err.response) {

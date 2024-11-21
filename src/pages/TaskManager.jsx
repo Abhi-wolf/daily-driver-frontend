@@ -6,7 +6,7 @@ function TaskManager() {
     <>
       <TaskManagerSideBar />
       {/* <div className="w-full overflow-y-auto overflow-x-hidden"> */}
-      <div className="w-full  overflow-x-hidden">
+      <div className="w-full overflow-x-hidden">
         <Outlet />
       </div>
     </>

@@ -106,7 +106,7 @@ export default function Home() {
               />
               <FeatureCard
                 icon={<Music className="h-10 w-10 text-primary" />}
-                title="Music Library"
+                title="Music "
                 description="Upload, organize, and listen to your favorite tunes, all within the app."
               />
               <FeatureCard
@@ -118,6 +118,11 @@ export default function Home() {
                 icon={<FileText className="h-10 w-10 text-primary" />}
                 title="Note Taking"
                 description="Capture your thoughts with our file explorer-like note-taking system."
+              />
+              <FeatureCard
+                icon={<FileText className="h-10 w-10 text-primary" />}
+                title="Bookmarks"
+                description="Bookmark links to view them latter directly using the custome chrome extension"
               />
             </div>
           </div>

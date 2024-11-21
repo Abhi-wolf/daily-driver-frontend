@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import FolderOrFile from "../FolderOrFile";
 import ToolTip from "../ToolTip";
 import { Folder, NotebookPen } from "lucide-react";
 import { useState } from "react";
 import AddFileOrFolder from "../AddFolderOrFile";
 import { useGetUserFileExplorer } from "../../hooks/fileExplorer/useGetFileExplorer";
 import { MediumSpinner } from "../Spinners";
+import FolderOrFile from "./FolderOrFile";
 
 function Folderbar() {
   const { data: explorerData, isPending } = useGetUserFileExplorer();
@@ -57,10 +57,10 @@ function Folderbar() {
       </div>
 
       {isPending ? (
-        // <div className="w-full h-full flex justify-center items-center">
-        <MediumSpinner />
+        <div className="w-full h-full flex justify-center items-center">
+          <MediumSpinner />
+        </div>
       ) : (
-        // </div>
         <div className="overflow-y-hidden">
           {explorerData?.map((item) => {
             return <FolderOrFile folder={item} key={item._id} />;

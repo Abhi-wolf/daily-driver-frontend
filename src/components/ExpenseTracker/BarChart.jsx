@@ -66,7 +66,7 @@ function BarChart() {
   }));
 
   return (
-    <Card className={cn("w-[580px]")}>
+    <Card className={cn("w-[340px] md:w-[580px]")}>
       <CardHeader>
         <CardTitle>Monthly Expenses</CardTitle>
         <CardDescription>

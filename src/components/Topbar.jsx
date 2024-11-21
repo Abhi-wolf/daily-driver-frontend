@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Bell, Bookmark, CalendarDaysIcon } from "lucide-react";
+import { Bell, CalendarDaysIcon } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { useState } from "react";
@@ -43,12 +43,13 @@ function Topbar() {
   };
 
   return (
-    <header className="w-full border-[1px] border-gray-300 fixed top-0 left-0 z-50">
+    <header className="w-full border-[1px] border-gray-300 fixed top-0 left-0 z-500 px-1 md:px-4">
       <div className="flex justify-between items-center ">
         {/* left */}
         <ul className="flex gap-4 items-center">
-          <li className="list-none cursor-pointer">
-            <Bookmark className=" h-5 w-5 hover:text-gray-400 transition" />
+          <li className="list-none cursor-pointer font-semibold text-gray-500 italic underline underline-offset-0 decoration-wavy">
+            {/* <Bookmark className=" h-5 w-5 hover:text-gray-400 transition" /> */}
+            TaskMaster
           </li>
         </ul>
 
@@ -56,7 +57,7 @@ function Topbar() {
         <TodaysDate />
 
         {/* right */}
-        <div className="flex gap-6 items-center">
+        <div className="flex gap-2 md:gap-6 items-center">
           <div>
             <Bell className=" h-5 w-5 hover:text-gray-400 transition" />
           </div>

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
+import { memo, useState } from "react";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { useForm, Controller } from "react-hook-form";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
@@ -27,10 +28,11 @@ import { useCreateTodo } from "../hooks/todos/useCreateTodo";
 import { toast } from "sonner";
 import { useUpdateTodo } from "../hooks/todos/useUpdateTodo";
 
-function AddOrEditTask({ isOpen, onClose, todo }) {
+function AddOrEditTask({ todo, children }) {
   const { labels } = useGetLabels();
   const { createTodo, isCreatingTodo } = useCreateTodo();
   const { updateTodo, isUpdatingTodo } = useUpdateTodo();
+  const [isOpen, onClose] = useState(false);
 
   const {
     register,
@@ -57,7 +59,6 @@ function AddOrEditTask({ isOpen, onClose, todo }) {
           {
             onSuccess: () => {
               toast.success("Task created successfully");
-              onClose(false);
             },
             onError: (err) => {
               toast.error(err.message);
@@ -70,7 +71,6 @@ function AddOrEditTask({ isOpen, onClose, todo }) {
           {
             onSuccess: () => {
               toast.success("Task updated successfully");
-              onClose(false);
             },
             onError: (err) => {
               toast.error(err.message);
@@ -79,6 +79,8 @@ function AddOrEditTask({ isOpen, onClose, todo }) {
         );
       }
     } catch (error) {
+      console.error(error);
+    } finally {
       onClose(false);
     }
   };
@@ -88,9 +90,12 @@ function AddOrEditTask({ isOpen, onClose, todo }) {
 
   return (
     <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogTitle className="hidden">Task Form</DialogTitle>
         <form
+          aria-disabled={isCreatingTodo || isUpdatingTodo}
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 "
         >
@@ -175,8 +180,10 @@ function AddOrEditTask({ isOpen, onClose, todo }) {
               )}
             />
 
-            <Button type="submit" disabled={isCreatingTodo}>
-              Save changes
+            <Button type="submit" disabled={isCreatingTodo || isUpdatingTodo}>
+              {isCreatingTodo || isUpdatingTodo
+                ? "Saving changes ..."
+                : " Save changes"}
             </Button>
           </div>
         </form>
@@ -185,4 +192,4 @@ function AddOrEditTask({ isOpen, onClose, todo }) {
   );
 }
 
-export default AddOrEditTask;
+export default memo(AddOrEditTask);

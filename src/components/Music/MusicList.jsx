@@ -1,28 +1,43 @@
 /* eslint-disable react/prop-types */
-import { Pause, PlayIcon, Trash2Icon } from "lucide-react";
+import { Pause, PlayIcon } from "lucide-react";
 import { useGetSongs } from "../../hooks/songs/useGetSongs";
 import { LargeSpinner } from "../Spinners";
 import { useMusicStore } from "../../store";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
+
 import { useState } from "react";
 import { useDeleteSong } from "../../hooks/songs/useDeleteSong";
 import { toast } from "sonner";
 import DataNotFound from "../DataNotFound";
+import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 
 function MusicList() {
+  const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
   const { songs, isPending: isGettingSongs } = useGetSongs();
-
   const { queue, currentTrackIndex } = useMusicStore();
+  const { deleteSong, isDeletingSong } = useDeleteSong();
 
   const currentTrack = queue[currentTrackIndex];
+
+  const handleDeleteSong = (songId) => {
+    try {
+      deleteSong(
+        { songId },
+        {
+          onSuccess: () => {
+            toast.success("Song successfully deleted");
+          },
+          onError: (err) => {
+            toast.error(err?.message);
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    } finally {
+      setOpenConfirmDeleteDialog(false);
+    }
+  };
 
   return (
     <div className="w-[90%] mx-auto flex flex-col gap-4 ">
@@ -48,7 +63,13 @@ function MusicList() {
                   <PlayIcon className="h-5 w-5 text-green-500 hover:cursor-not-allowed " />
                 )}
 
-                <ConfirmDeleteDialog songId={song?._id} />
+                <ConfirmDeleteDialog
+                  onClose={setOpenConfirmDeleteDialog}
+                  open={openConfirmDeleteDialog}
+                  isPending={isDeletingSong}
+                  handleDelete={() => handleDeleteSong(song._id)}
+                  message="Once deleted the song cannot be recovered"
+                />
               </div>
             </li>
           ))}
@@ -63,52 +84,3 @@ function MusicList() {
 }
 
 export default MusicList;
-
-function ConfirmDeleteDialog({ songId }) {
-  const { deleteSong, isDeletingSong } = useDeleteSong();
-  const [isOpen, onClose] = useState(false);
-
-  const handleDeleteSong = () => {
-    try {
-      deleteSong(
-        { songId },
-        {
-          onSuccess: () => {
-            toast.success("Song successfully deleted");
-          },
-          onError: (err) => {
-            console.error(err);
-            toast.error(err?.message);
-          },
-        }
-      );
-    } catch (error) {
-      console.error(error);
-      // toast.error()
-    }
-  };
-
-  return (
-    <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false}>
-      <DialogTrigger asChild>
-        <Trash2Icon className="h-5 w-5 text-red-500 hover:cursor-pointer hover:text-red" />
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] p-8">
-        <DialogHeader>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogDescription>
-            Once deleted the song cannot be recovered
-          </DialogDescription>
-        </DialogHeader>
-        <Button
-          type="submit"
-          variant="destructive"
-          disabled={isDeletingSong}
-          onClick={handleDeleteSong}
-        >
-          Confirm Delete
-        </Button>
-      </DialogContent>
-    </Dialog>
-  );
-}

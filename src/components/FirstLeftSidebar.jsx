@@ -4,6 +4,7 @@
 import {
   BadgeIndianRupee,
   BookCheck,
+  Bookmark,
   CalendarDays,
   Command,
   FolderPlus,
@@ -20,7 +21,7 @@ import { CommandDialogMenu } from "./CommandDialogMenu";
 function FirstLeftSidebar() {
   const navigate = useNavigate();
   const [showCommandDialog, setShowCommandDialog] = useState(false);
-  const [addNewTaskModal, setAddNewTaskModal] = useState(false);
+  // const [addNewTaskModal, setAddNewTaskModal] = useState(false);
 
   return (
     <>
@@ -60,13 +61,14 @@ function FirstLeftSidebar() {
                 <BookCheck className="h-5 w-5 hover:text-gray-400 transition" />
               </ToolTip>
             </li>
-            <li
-              className="list-none cursor-pointer"
-              onClick={() => setAddNewTaskModal(!addNewTaskModal)}
-            >
-              <ToolTip text="New Task">
-                <PencilLineIcon className="h-5 w-5 hover:text-gray-400 transition" />
-              </ToolTip>
+            <li className="list-none cursor-pointer">
+              <AddOrEditTask>
+                <span>
+                  <ToolTip text="New Task">
+                    <PencilLineIcon className="h-5 w-5 hover:text-gray-400 transition" />
+                  </ToolTip>
+                </span>
+              </AddOrEditTask>
             </li>
 
             <li
@@ -86,6 +88,14 @@ function FirstLeftSidebar() {
                 <Music className="h-5 w-5 hover:text-gray-400 transition" />
               </ToolTip>
             </li>
+            <li
+              className="list-none cursor-pointer"
+              onClick={() => navigate(`/bookmarks/?page=1&limit=9`)}
+            >
+              <ToolTip text="Bookmarks">
+                <Bookmark className="h-5 w-5 hover:text-gray-400 transition" />
+              </ToolTip>
+            </li>
 
             <li
               className="list-none cursor-pointer"
@@ -97,12 +107,12 @@ function FirstLeftSidebar() {
             </li>
           </div>
 
-          {addNewTaskModal && (
+          {/* {addNewTaskModal && (
             <AddOrEditTask
               isOpen={addNewTaskModal}
               onClose={setAddNewTaskModal}
             />
-          )}
+          )} */}
 
           <CommandDialogMenu
             open={showCommandDialog}

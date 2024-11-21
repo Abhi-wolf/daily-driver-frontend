@@ -91,7 +91,7 @@ function PieChartExpenses() {
     }) || [];
 
   return (
-    <Card className={cn("w-[580px] flex flex-col")}>
+    <Card className={cn("w-[340px] md:w-[580px] flex flex-col")}>
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Category Spendings</CardTitle>
       </CardHeader>
@@ -123,8 +123,8 @@ function PieChartExpenses() {
           <DataNotFound message="No expenses found during this period" />
         )}
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
+      <CardFooter className="flex-col gap-2 text-xs md:text-sm">
+        <div className="leading-none text-muted-foreground text-center">
           Showing spending during the period from{" "}
           <span className="italic text-gray-600 font-semibold mx-1">
             {transformDateWithSlash(start)}
