@@ -193,9 +193,9 @@ export function SignUpForm() {
           <Button type="submit" className="w-full" disabled={isSigningUp}>
             Sign up
           </Button>
-          <Button variant="outline" className="w-full">
+          {/* <Button variant="outline" className="w-full">
             Login with Google
-          </Button>
+          </Button> */}
         </form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
