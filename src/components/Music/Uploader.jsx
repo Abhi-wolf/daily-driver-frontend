@@ -19,8 +19,8 @@ export default function Uploader() {
   const onSubmit = async () => {
     if (file) {
       const formData = new FormData();
-      formData.append("songFile", file); // Append the actual file
-      formData.append("songName", file.name); // Append the file name
+      formData.append("songFile", file);
+      formData.append("songName", file.name);
 
       try {
         uploadSong(formData, {
@@ -28,13 +28,13 @@ export default function Uploader() {
             toast.success("Song uploaded successfully");
           },
         });
-
-        setAudioUrl(null);
-        setFile(null);
-        setDuration(null);
       } catch (error) {
         console.error("Upload failed", error);
         toast.error("Failed to upload the song");
+      } finally {
+        setAudioUrl(null);
+        setFile(null);
+        setDuration(null);
       }
     }
   };
@@ -138,6 +138,7 @@ export default function Uploader() {
         className="hidden"
         {...register("file")}
         onChange={handleFileChange}
+        disabled={isUploadingSong}
         ref={fileInputRef}
       />
       <Button
@@ -145,7 +146,7 @@ export default function Uploader() {
         className="w-full mt-4"
         disabled={!file || isUploadingSong}
       >
-        Upload Music
+        {isUploadingSong ? "Please Wait ..." : "Upload Music"}
       </Button>
       {audioUrl && <audio ref={audioRef} src={audioUrl} className="hidden" />}
     </form>

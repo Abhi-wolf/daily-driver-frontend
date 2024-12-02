@@ -29,7 +29,7 @@ function BookmarkPagination({ initialPage = 1, onPageChange }) {
 
   return (
     <div className="fixed bottom-14 left-0 right-0 flex justify-center ">
-      <div className="rounded-lg  p-2 shadow-lg backdrop-blur bg-gray-200">
+      <div className="rounded-lg p-1 md:p-2 shadow-lg backdrop-blur bg-gray-200">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
