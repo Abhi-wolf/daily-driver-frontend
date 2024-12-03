@@ -1,6 +1,8 @@
 const apiURL = import.meta.env.VITE_BASE_URL;
 
 export async function getUserTodos(filterObj) {
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   let url = `${apiURL}/todos?`;
   const queryParams = new URLSearchParams();
 
@@ -21,12 +23,12 @@ export async function getUserTodos(filterObj) {
   }
 
   try {
-    const res = await fetch(url, {
+    const res = await fetch(`${url}&timezone=${timezone}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", // Sends cookies and credentials with the request
+      credentials: "include",
     });
 
     // Check if the response is okay (status 200-299)

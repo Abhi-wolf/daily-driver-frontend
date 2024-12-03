@@ -35,7 +35,7 @@ export default function BookmarkGrid({ searchTerm, currentPage = 1 }) {
   }
 
   return (
-    <div className="w-full h-[80vh] ">
+    <div className="w-full h-[80vh] overflow-y-auto ">
       {filteredBookmarks?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredBookmarks?.map((bookmark) => (

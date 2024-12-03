@@ -10,7 +10,7 @@ function Bookmarks() {
 
   return (
     <div className="container mx-auto px-2 md:px-4 py-2 md:py-8">
-      <div className="w-full overflow-y-auto">
+      <div className="w-full">
         <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
           <h2 className="text-3xl font-bold flex items-center gap-2">
             <Bookmark className="w-8 h-8 text-primary" />

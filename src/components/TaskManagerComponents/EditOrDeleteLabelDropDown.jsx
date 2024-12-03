@@ -10,13 +10,11 @@ import {
 
 import { useState, memo } from "react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router";
 import { useDeleteLabel } from "../../hooks/labels/useDeleteLabel";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 
 function EditOrDeleteLabelDropDown({ labelId }) {
   const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
-  const navigate = useNavigate();
   const { deleteLabel, isDeletingLabel } = useDeleteLabel();
 
   const handleDeleteLabel = async (e) => {
@@ -28,7 +26,6 @@ function EditOrDeleteLabelDropDown({ labelId }) {
         {
           onSuccess: () => {
             toast.success("Label successfully deleted");
-            navigate("/tasksmanager");
           },
           onError: (error) => {
             toast.error(error?.message);
@@ -44,7 +41,7 @@ function EditOrDeleteLabelDropDown({ labelId }) {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
           <EllipsisVertical />

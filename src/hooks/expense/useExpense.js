@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   createExpense,
@@ -63,8 +63,13 @@ export function useAddExpense() {
 }
 
 export function useDeleteExpense() {
+  const queryClient = useQueryClient();
+
   const { mutate: deleteExpense, isPending: isDeletingExpense } = useMutation({
     mutationFn: deleteExpenseApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["expense"]);
+    },
   });
 
   return { deleteExpense, isDeletingExpense };

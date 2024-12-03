@@ -101,6 +101,39 @@ function TaskManagerSideBar() {
           </li>
         </ul>
 
+        {/* projects */}
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-bold text-gray-400">My Projects</h2>
+          {isGettingProjects ? (
+            <SmallSpinner />
+          ) : (
+            <ul className="flex flex-col gap-2 text-gray-500 ">
+              {projects?.map((project) => (
+                <li
+                  key={project._id}
+                  onClick={() => {
+                    setprojectToOpen(project?._id);
+                    navigate(`/tasksmanager/project/${project._id}`);
+                  }}
+                  className={`${
+                    projectId === project._id
+                      ? "text-green-400 font-semibold"
+                      : ""
+                  } flex justify-between cursor-pointer  hover:font-semibold`}
+                >
+                  <div className="flex gap-4">
+                    <HashIcon className="h-5 w-5 text-purple-500" />{" "}
+                    <span>{project.projectName}</span>
+                  </div>
+                  <EditDeleteProjectDropDown projectId={projectId} />
+                </li>
+              ))}
+
+              <AddOrEditProjectModel />
+            </ul>
+          )}
+        </div>
+
         {/* labels */}
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-bold text-gray-400">My Labels</h2>
@@ -122,37 +155,6 @@ function TaskManagerSideBar() {
               ))}
 
               <AddLabelModel />
-            </ul>
-          )}
-        </div>
-
-        {/* projects */}
-        <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-bold text-gray-400">My Projects</h2>
-          {isGettingProjects ? (
-            <SmallSpinner />
-          ) : (
-            <ul className="flex flex-col gap-2 text-gray-500 ">
-              {projects?.map((project) => (
-                <li
-                  key={project._id}
-                  onClick={() => {
-                    setprojectToOpen(project?._id);
-                    navigate(`/tasksmanager/project/${project._id}`);
-                  }}
-                  className={`${
-                    projectId === project._id ? "text-green-400" : ""
-                  } flex justify-between cursor-pointer  hover:font-semibold`}
-                >
-                  <div className="flex gap-4">
-                    <HashIcon className="h-5 w-5 text-purple-500" />{" "}
-                    <span>{project.projectName}</span>
-                  </div>
-                  <EditDeleteProjectDropDown projectId={projectId} />
-                </li>
-              ))}
-
-              <AddOrEditProjectModel />
             </ul>
           )}
         </div>

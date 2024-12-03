@@ -45,6 +45,9 @@ export default function BookmarkItem({ bookmark }) {
         onError: (err) => {
           toast.error(err?.message || "Something went wrong");
         },
+        onSettled: () => {
+          setIsOpenConfirmDeleteDialog(true);
+        },
       }
     );
   };
@@ -58,7 +61,7 @@ export default function BookmarkItem({ bookmark }) {
           </div>
           <span className="font-semibold line-clamp-1">{bookmark.title}</span>
         </div>
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="destructive"

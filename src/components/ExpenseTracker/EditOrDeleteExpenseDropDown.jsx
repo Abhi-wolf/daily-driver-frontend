@@ -11,17 +11,33 @@ import {
 import { useState } from "react";
 import ExpenseForm from "./ExpenseForm";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
+import { useDeleteExpense } from "../../hooks/expense/useExpense";
+import { toast } from "sonner";
 
 function EditOrDeleteExpenseDropDown({ expense }) {
   const [openExpenseEditForm, setOpenExpenseEditForm] = useState(false);
   const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
+  const { deleteExpense } = useDeleteExpense();
 
-  const handleDeleteExpense = async () => {
+  const handleDeleteExpense = async (e) => {
+    e.preventDefault();
+
+    deleteExpense(
+      { expenseId: expense._id },
+      {
+        onSuccess: () => {
+          toast.success("Expense Info deleted successfully");
+        },
+        onError: () => {
+          toast.error("Something went wrong");
+        },
+      }
+    );
     setOpenConfirmDeleteDialog(false);
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
           <EllipsisVertical />
