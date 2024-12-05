@@ -41,7 +41,7 @@ function ConfirmDeleteDialog({ open, handleDelete, isPending, onClose }) {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction disabled={isPending} onClick={handleDelete}>
-            Continue
+            {isPending ? "Deleting ..." : "Continue"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

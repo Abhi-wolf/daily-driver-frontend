@@ -23,6 +23,7 @@ function AddLabelModel() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -34,6 +35,7 @@ function AddLabelModel() {
           onSuccess: () => {
             toast.success("Label added successfully");
             onClose(false);
+            reset();
           },
           onError: (error) => {
             toast.error(error?.message);

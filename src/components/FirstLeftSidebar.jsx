@@ -90,7 +90,7 @@ function FirstLeftSidebar() {
             </li>
             <li
               className="list-none cursor-pointer"
-              onClick={() => navigate(`/bookmarks/?page=1&limit=9`)}
+              onClick={() => navigate(`/bookmarks/?page=1&limit=15`)}
             >
               <ToolTip text="Bookmarks">
                 <Bookmark className="h-5 w-5 hover:text-gray-400 transition" />

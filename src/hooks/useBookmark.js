@@ -1,7 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   addBookmark as addBookmarkApi,
   deleteBookmark as deleteBookmarkApi,
+  getUserBookmark,
   getUserBookmarks,
   updateBookmark as updateBookmarkApi,
 } from "../features/apiBookmark";
@@ -16,6 +22,39 @@ export function useGetBookmarks({ page, limit }) {
   return { data, isPending, isError, error };
 }
 
+export function useGetInfiniteBookmarks() {
+  const {
+    data,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isError,
+    error,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["bookmark"],
+    queryFn: getUserBookmark,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.length > 0) {
+        return allPages.length + 1;
+      } else {
+        return undefined;
+      }
+    },
+  });
+
+  return {
+    data,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isError,
+    error,
+    isFetchingNextPage,
+  };
+}
+
 export function useUpdateBookmark() {
   const queryClient = useQueryClient();
 
@@ -23,7 +62,7 @@ export function useUpdateBookmark() {
     {
       mutationFn: updateBookmarkApi,
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
+        queryClient.invalidateQueries({ queryKey: ["bookmark"] });
       },
     }
   );
@@ -41,7 +80,7 @@ export function useAddBookmark() {
   } = useMutation({
     mutationFn: addBookmarkApi,
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
+      queryClient.invalidateQueries({ queryKey: ["bookmark"] });
     },
   });
 
@@ -55,7 +94,7 @@ export function useDeleteBookmark() {
     {
       mutationFn: deleteBookmarkApi,
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
+        queryClient.invalidateQueries({ queryKey: ["bookmark"] });
       },
     }
   );

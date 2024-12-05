@@ -30,6 +30,7 @@ function AddOrEditBookMark({ bookmark, children }) {
     setValue,
     getValues,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -50,6 +51,7 @@ function AddOrEditBookMark({ bookmark, children }) {
           {
             onSuccess: () => {
               toast.success("Bookmark added successfully");
+              reset();
             },
             onError: (err) => {
               console.error(err.message);
@@ -69,6 +71,7 @@ function AddOrEditBookMark({ bookmark, children }) {
           {
             onSuccess: () => {
               toast.success("Bookmark updated successfully");
+              reset();
             },
             onError: (err) => {
               console.error(err.message);

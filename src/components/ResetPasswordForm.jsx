@@ -21,6 +21,7 @@ export default function ResetPasswordForm() {
   const {
     handleSubmit,
     register,
+    reset,
     getValues,
     formState: { errors },
   } = useForm();
@@ -34,6 +35,7 @@ export default function ResetPasswordForm() {
       {
         onSuccess: () => {
           toast.success("Password reset successfull");
+          reset();
           navigate("/login");
         },
         onError: (err) => {

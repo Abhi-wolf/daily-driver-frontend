@@ -29,6 +29,39 @@ export async function getUserBookmarks({ page, limit }) {
   }
 }
 
+export async function getUserBookmark({ pageParam }) {
+  console.log("pageParam = ", pageParam);
+
+  try {
+    const res = await fetch(
+      `${apiURL}/bookmarks/?page=${pageParam}&limit=${15}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Something went wrong");
+    }
+
+    const data = await res.json();
+    console.log(data);
+
+    return data?.data;
+  } catch (err) {
+    if (err.response) {
+      console.error(err.response.data.message);
+      throw new Error(err.response.data.message);
+    }
+    throw new Error(err);
+  }
+}
+
 export async function addBookmark({ newBookmark }) {
   try {
     const res = await fetch(`${apiURL}/bookmarks/`, {

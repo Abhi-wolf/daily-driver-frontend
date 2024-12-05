@@ -1,12 +1,12 @@
-import { useState } from "react";
+// import { useState } from "react";
 import BookmarkView from "../components/Bookmark/BookmarkView";
-import { Bookmark, Plus, Search } from "lucide-react";
+import { Bookmark, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import AddOrEditBookMark from "../components/Bookmark/AddOrEditBookMark";
 
 function Bookmarks() {
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="container mx-auto px-2 md:px-4 py-2 md:py-8">
@@ -17,7 +17,7 @@ function Bookmarks() {
             My Bookmarks
           </h2>
           <div className="flex items-center gap-4 w-full sm:w-auto">
-            <div className="relative flex-grow sm:flex-grow-0 mt-1">
+            {/* <div className="relative flex-grow sm:flex-grow-0 mt-1">
               <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <Input
                 type="text"
@@ -26,7 +26,7 @@ function Bookmarks() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 w-full"
               />
-            </div>
+            </div> */}
             <AddOrEditBookMark>
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
@@ -35,7 +35,7 @@ function Bookmarks() {
             </AddOrEditBookMark>
           </div>
         </div>
-        <BookmarkView searchTerm={searchTerm} />
+        <BookmarkView />
       </div>
     </div>
   );

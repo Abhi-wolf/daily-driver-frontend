@@ -40,6 +40,7 @@ function AddOrEditTask({ todo, children }) {
     formState: { errors },
     control,
     setValue,
+    reset,
     watch,
   } = useForm({
     defaultValues: {
@@ -59,6 +60,7 @@ function AddOrEditTask({ todo, children }) {
           {
             onSuccess: () => {
               toast.success("Task created successfully");
+              reset();
             },
             onError: (err) => {
               toast.error(err.message);
@@ -71,6 +73,7 @@ function AddOrEditTask({ todo, children }) {
           {
             onSuccess: () => {
               toast.success("Task updated successfully");
+              reset();
             },
             onError: (err) => {
               toast.error(err.message);

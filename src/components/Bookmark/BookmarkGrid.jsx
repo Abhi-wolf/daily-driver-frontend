@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetBookmarks } from "../../hooks/useBookmark";
 import { useEffect } from "react";

@@ -38,6 +38,7 @@ function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
     formState: { errors },
     control,
     setValue,
+    reset,
     watch,
   } = useForm({
     defaultValues: {
@@ -61,6 +62,7 @@ function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
             });
             queryClient.invalidateQueries({ queryKey: ["monthlyExpenses"] });
             onClose(false);
+            reset();
           },
           onError: () => {
             toast.error("Something went wrong");

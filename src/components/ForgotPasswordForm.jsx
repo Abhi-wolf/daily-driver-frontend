@@ -17,6 +17,7 @@ export default function ForgotpasswordForm() {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm();
   const { forgotPassword, isPending } = useForgotPassword();
@@ -27,6 +28,7 @@ export default function ForgotpasswordForm() {
       {
         onSuccess: () => {
           toast.success("If User is registered Email sent successfully");
+          reset();
         },
         onError: (err) => {
           toast.error(err.message);

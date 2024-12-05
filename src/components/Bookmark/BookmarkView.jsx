@@ -1,20 +1,11 @@
 /* eslint-disable react/prop-types */
 
-import { useState } from "react";
-import BookmarkPagination from "./BookmarkPagination";
-import BookmarkGrid from "./BookmarkGrid";
+import InfiniteBookmarkView from "./InfiniteBookmarkView";
 
-export default function BookmarkView({ searchTerm }) {
-  const [currentPage, setCurrentPage] = useState(1);
-
+export default function BookmarkView() {
   return (
-    <>
-      <BookmarkGrid searchTerm={searchTerm} currentPage={currentPage} />
-
-      <BookmarkPagination
-        initialPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
-    </>
+    <div className="w-full h-full max-h-[80vh] overflow-y-auto">
+      <InfiniteBookmarkView />
+    </div>
   );
 }

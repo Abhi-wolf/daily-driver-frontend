@@ -26,6 +26,7 @@ export default function AddEventDialog({
     register,
     handleSubmit,
     getValues,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -48,6 +49,7 @@ export default function AddEventDialog({
         {
           onSuccess: () => {
             toast.success("Event Added successfully");
+            reset();
           },
           onError: (err) => {
             toast.error(err.message);

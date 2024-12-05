@@ -26,6 +26,7 @@ function BudgetForm({ onClose, isOpen, budget }) {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -45,6 +46,7 @@ function BudgetForm({ onClose, isOpen, budget }) {
           });
           queryClient.invalidateQueries({ queryKey: ["expenseSummary"] });
           onClose(false);
+          reset();
         },
         onError: () => {
           toast.error("Something went wrong");

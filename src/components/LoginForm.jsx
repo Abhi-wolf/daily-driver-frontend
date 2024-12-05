@@ -22,6 +22,7 @@ export function LoginForm() {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm();
   const { login, isPending } = useLogin();
@@ -35,6 +36,7 @@ export function LoginForm() {
         onSuccess: (data) => {
           if (data?.user?.email) {
             setUser(data?.user);
+            reset();
             toast.success("Login successfull", data?.user?.email);
             navigate("/");
           }

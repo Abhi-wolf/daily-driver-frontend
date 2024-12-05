@@ -29,6 +29,7 @@ function AddOrEditProjectModel({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -44,6 +45,7 @@ function AddOrEditProjectModel({
           onSuccess: () => {
             toast.success("Project created successfully");
             onClose(false);
+            reset();
           },
           onError: (error) => {
             toast.error(error?.message);

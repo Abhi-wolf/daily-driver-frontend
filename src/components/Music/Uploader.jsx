@@ -13,7 +13,7 @@ export default function Uploader() {
   const [duration, setDuration] = useState(null);
   const fileInputRef = useRef(null);
   const audioRef = useRef(null);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { uploadSong, isUploadingSong } = useUploadSong();
 
   const onSubmit = async () => {
@@ -26,6 +26,7 @@ export default function Uploader() {
         uploadSong(formData, {
           onSuccess: () => {
             toast.success("Song uploaded successfully");
+            reset();
           },
         });
       } catch (error) {
