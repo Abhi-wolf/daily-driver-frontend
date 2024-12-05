@@ -30,8 +30,6 @@ export async function getUserBookmarks({ page, limit }) {
 }
 
 export async function getUserBookmark({ pageParam }) {
-  console.log("pageParam = ", pageParam);
-
   try {
     const res = await fetch(
       `${apiURL}/bookmarks/?page=${pageParam}&limit=${15}`,
@@ -50,7 +48,6 @@ export async function getUserBookmark({ pageParam }) {
     }
 
     const data = await res.json();
-    console.log(data);
 
     return data?.data;
   } catch (err) {
