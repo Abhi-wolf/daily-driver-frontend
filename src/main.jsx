@@ -16,7 +16,12 @@ import DevAlert from "./components/DevAlert.jsx";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      gcTime: 1000 * 60 * 60, // 01 hours
+      gcTime: 1000 * 60 * 60,
+      retry: 2,
+      staleTime: 1000 * 60 * 10, // data stays fresh for 10 minutes
+      cacheTime: 1000 * 60 * 60, // cache lifespan
+      refetchOnWindowFocus: false, // Avoid refetching when the window regains focus
+      refetchOnReconnect: false, // Avoid refetching when network reconnects
     },
   },
   queryCache: new QueryCache({

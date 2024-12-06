@@ -27,6 +27,8 @@ export async function getFolders() {
   }
 }
 export async function getFolder(folderId) {
+  // return null;
+
   try {
     const res = await fetch(`${apiURL}/folders/${folderId}`, {
       method: "GET",

@@ -1,22 +1,22 @@
 /* eslint-disable react/prop-types */
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetUserFileExplorer } from "../hooks/fileExplorer/useGetFileExplorer";
-import { useCreateNewFile } from "../hooks/fileExplorer/useFile";
-import { useCreateNewFolder } from "../hooks/fileExplorer/useFolder";
+import { useGetUserFileExplorer } from "../../hooks/fileExplorer/useGetFileExplorer";
+import { useCreateNewFile } from "../../hooks/fileExplorer/useFile";
+import { useCreateNewFolder } from "../../hooks/fileExplorer/useFolder";
 
-function AddFileOrFolder({ isOpen, onClose, isFolder }) {
+function AddFileOrFolder({ item, isOpen, onClose, isFolder }) {
   const queryClient = useQueryClient();
   const { createNewFolder, isCreatingNewFolder } = useCreateNewFolder();
   const { createNewFile, isCreatingNewFile } = useCreateNewFile();
@@ -34,16 +34,16 @@ function AddFileOrFolder({ isOpen, onClose, isFolder }) {
     // Check if a folder/file with the same name already exists
     let duplicate;
     if (isFolder) {
-      duplicate = existingItems?.some((item) =>
-        item.type === "folder"
-          ? item.folderName.toLowerCase() === newData.folderName.toLowerCase()
-          : item.fileName.toLowerCase() === newData.folderName.toLowerCase()
+      duplicate = existingItems?.some((fol) =>
+        fol.type === "folder"
+          ? fol.folderName.toLowerCase() === newData.folderName.toLowerCase()
+          : fol.fileName.toLowerCase() === newData.folderName.toLowerCase()
       );
     } else {
-      duplicate = existingItems?.some((item) =>
-        item.type === "folder"
-          ? item.folderName.toLowerCase() === newData.fileName.toLowerCase()
-          : item.fileName.toLowerCase() === newData.fileName.toLowerCase()
+      duplicate = existingItems?.some((file) =>
+        file.type === "folder"
+          ? file.folderName.toLowerCase() === newData.fileName.toLowerCase()
+          : file.fileName.toLowerCase() === newData.fileName.toLowerCase()
       );
     }
 
@@ -53,7 +53,7 @@ function AddFileOrFolder({ isOpen, onClose, isFolder }) {
     }
 
     try {
-      newData = { ...newData, parentFolder: null };
+      newData = { ...newData, parentFolder: item ? item._id : null };
 
       if (isFolder) {
         createNewFolder(
@@ -62,7 +62,13 @@ function AddFileOrFolder({ isOpen, onClose, isFolder }) {
             onSuccess: () => {
               toast.success("Folder created successfully");
               onClose(false);
-              queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+              if (item) {
+                queryClient.invalidateQueries({
+                  queryKey: ["folder", item._id],
+                });
+              } else {
+                queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+              }
             },
             onError: (error) => {
               toast.error(error.message);
@@ -76,7 +82,13 @@ function AddFileOrFolder({ isOpen, onClose, isFolder }) {
             onSuccess: () => {
               toast.success("File created successfully");
               onClose(false);
-              queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+              if (item) {
+                queryClient.invalidateQueries({
+                  queryKey: ["folder", item._id],
+                });
+              } else {
+                queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+              }
             },
             onError: (error) => {
               toast.error(error.message);

@@ -13,23 +13,6 @@ import {
 import { cn } from "../../lib/utils";
 import { useGetMonthlyExpenses } from "../../hooks/expense/useExpense";
 
-export const description = "A multiple line chart";
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-  { month: "July", desktop: 234, mobile: 120 },
-  { month: "August", desktop: 214, mobile: 180 },
-  { month: "September", desktop: 244, mobile: 140 },
-  { month: "October", desktop: 214, mobile: 160 },
-  { month: "November", desktop: 274, mobile: 190 },
-  { month: "December", desktop: 204, mobile: 200 },
-];
-
 const monthNames = [
   "January",
   "February",

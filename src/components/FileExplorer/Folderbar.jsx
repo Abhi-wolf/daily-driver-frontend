@@ -2,10 +2,48 @@
 import ToolTip from "../ToolTip";
 import { Folder, NotebookPen } from "lucide-react";
 import { useState } from "react";
-import AddFileOrFolder from "../AddFolderOrFile";
+import AddFileOrFolder from "./AddFolderOrFile";
 import { useGetUserFileExplorer } from "../../hooks/fileExplorer/useGetFileExplorer";
 import { MediumSpinner } from "../Spinners";
 import FolderOrFile from "./FolderOrFile";
+import FileAndFolder from "./FileAndFolder";
+
+const sampleData = [
+  {
+    _id: "1",
+    type: "folder",
+    folderName: "Documents",
+    contents: [
+      {
+        _id: "21",
+        type: "folder",
+        folderName: "Images",
+        contents: [
+          {
+            _id: "2",
+            type: "folder",
+            folderName: "Images and personal images",
+          },
+          { _id: "13", type: "file", fileName: "report.pdf" },
+          { _id: "14", type: "file", fileName: "presentation.pptx" },
+        ],
+      },
+      { _id: "23", type: "file", fileName: "report.pdf" },
+      { _id: "24", type: "file", fileName: "presentation.pptx" },
+    ],
+  },
+  {
+    _id: "2",
+    type: "folder",
+    folderName: "Images",
+    contents: [
+      { _id: "33", type: "file", fileName: "report.pdf" },
+      { _id: "34", type: "file", fileName: "presentation.pptx" },
+    ],
+  },
+  { _id: "53", type: "file", fileName: "report.pdf" },
+  { _id: "54", type: "file", fileName: "presentation.pptx" },
+];
 
 function Folderbar() {
   const { data: explorerData, isPending } = useGetUserFileExplorer();
@@ -63,7 +101,8 @@ function Folderbar() {
       ) : (
         <div className="overflow-y-hidden">
           {explorerData?.map((item) => {
-            return <FolderOrFile folder={item} key={item._id} />;
+            // return <FolderOrFile folder={item} key={item._id} />;
+            return <FileAndFolder item={item} key={item._id} />;
           })}
         </div>
       )}

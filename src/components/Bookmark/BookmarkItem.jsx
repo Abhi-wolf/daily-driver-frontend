@@ -45,11 +45,9 @@ export default function BookmarkItem({ bookmark }) {
         onError: (err) => {
           toast.error(err?.message || "Something went wrong");
         },
-        onSettled: () => {
-          setIsOpenConfirmDeleteDialog(true);
-        },
       }
     );
+    setIsOpenConfirmDeleteDialog(true);
   };
 
   return (

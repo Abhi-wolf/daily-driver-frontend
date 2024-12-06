@@ -54,6 +54,8 @@ export async function deleteFile({ fileId }) {
 }
 
 export async function getFile(fileId) {
+  // return null;
+
   try {
     const res = await fetch(`${apiURL}/files/${fileId}`, {
       method: "GET",

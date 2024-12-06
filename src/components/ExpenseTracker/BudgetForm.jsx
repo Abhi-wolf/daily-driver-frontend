@@ -20,7 +20,7 @@ import { useEffect } from "react";
 
 function BudgetForm({ onClose, isOpen, budget }) {
   const queryClient = useQueryClient();
-  const { updateBudget, isError, isUpdatingBudget, error } = useUpdateBudget();
+  const { updateBudget, isUpdatingBudget } = useUpdateBudget();
 
   const {
     register,

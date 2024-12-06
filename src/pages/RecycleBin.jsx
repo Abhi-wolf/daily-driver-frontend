@@ -4,13 +4,14 @@ import DeletedFolders from "../components/RecycleBin/DeletedFolders";
 import { Button } from "../components/ui/button";
 import DataNotFound from "../components/DataNotFound";
 import { Trash2 } from "lucide-react";
+import WorkInProgressMessage from "../components/WorkInProgressMessage";
 
 function RecycleBin() {
   const [isRecycleBinEmpty, setIsRecycleBinEmpty] = useState(false);
 
   return (
-    <section className="w-full min-h-full p-4 flex gap-4">
-      <DeletedFolders setIsRecycleBinEmpty={setIsRecycleBinEmpty} />
+    <section className="w-full flex justify-center items-center">
+      {/* <DeletedFolders setIsRecycleBinEmpty={setIsRecycleBinEmpty} />
       <DeletedFiles setIsRecycleBinEmpty={setIsRecycleBinEmpty} />
 
       {isRecycleBinEmpty && (
@@ -22,13 +23,15 @@ function RecycleBin() {
 
       <Button
         variant="outline"
-        disabled={isRecycleBinEmpty}
+        disabled={true}
         className={`absolute bottom-16 right-8 bg-red-600 ${
           isRecycleBinEmpty ? "cursor-not-allowed" : "cursor-pointer"
         }`}
       >
         Empty Trash
-      </Button>
+      </Button> */}
+
+      <WorkInProgressMessage />
     </section>
   );
 }
