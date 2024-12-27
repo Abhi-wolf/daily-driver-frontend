@@ -13,7 +13,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { PlusCircle } from "lucide-react";
+import { Loader, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAddProject } from "../../hooks/project/useAddProject";
@@ -52,8 +52,6 @@ function AddOrEditProjectModel({
           },
         }
       );
-
-      onClose(false);
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -118,8 +116,13 @@ function AddOrEditProjectModel({
               <span className="text-red-400 my-1">Name is required.</span>
             )}
           </div>
-          <Button type="submit" disabled={isPending}>
-            {mode === "create" ? "Create Project" : "Save Changes"}
+          <Button type="submit" disabled={isPending} className="flex gap-2">
+            {isPending && <Loader className="h-4 w-4 animate-spin" />}
+            {isPending
+              ? "Saving..."
+              : mode === "create"
+              ? "Create Project"
+              : "Save Changes"}
           </Button>
         </form>
       </DialogContent>

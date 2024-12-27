@@ -188,6 +188,7 @@ export const columns = [
             {
               onSuccess: () => {
                 toast.success("Task successfully deleted");
+                // setOpenConfirmDeleteDialog(false);
               },
               onError: (error) => {
                 toast.error(error?.message);
@@ -197,8 +198,6 @@ export const columns = [
         } catch (error) {
           console.error(error);
           toast.error("Something went wrong");
-        } finally {
-          setOpenConfirmDeleteDialog(false);
         }
       };
 

@@ -24,9 +24,9 @@ import { convertToISOFormat } from "../../lib/utils";
 
 export default function BookmarkItem({ bookmark }) {
   const { deleteBookmark, isDeletingBookmark } = useDeleteBookmark();
-  const [copied, setCopied] = useState(false);
   const [isOpenConfirmDeleteDialog, setIsOpenConfirmDeleteDialog] =
     useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(bookmark?.url);
@@ -41,13 +41,13 @@ export default function BookmarkItem({ bookmark }) {
       {
         onSuccess: () => {
           toast.success("Bookmark deleted successfully");
+          setIsOpenConfirmDeleteDialog(false);
         },
         onError: (err) => {
           toast.error(err?.message || "Something went wrong");
         },
       }
     );
-    setIsOpenConfirmDeleteDialog(true);
   };
 
   return (

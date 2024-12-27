@@ -12,6 +12,8 @@ import { toast, Toaster } from "sonner";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./components/ErrorFallback.jsx";
 import DevAlert from "./components/DevAlert.jsx";
+import FeedbackComponent from "./components/ui/FeedbackComponent.jsx";
+import FeedbackForm from "./components/FeedbackForm.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +44,9 @@ createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <App />
         <DevAlert />
+        {/* <FeedbackComponent /> */}
+
+        <FeedbackForm />
         <Toaster position="bottom-right" richColors />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

@@ -28,6 +28,7 @@ export default function FileAndFolder({ item }) {
   const [newFileOrFolder, setNewFileOrFolder] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [mode, setMode] = useState("create");
 
   const { deleteFolder, isDeletingFolder } = useDeleteFolder();
   const { deleteFile } = useDeleteFile();
@@ -142,6 +143,7 @@ export default function FileAndFolder({ item }) {
                 onClick={() => {
                   setNewFileFolderDialog(true);
                   setNewFileOrFolder("file");
+                  setMode("create");
                 }}
                 className="p-1 text-gray-500 hover:text-blue-600 rounded-full hover:bg-blue-100 transition-colors duration-200"
                 title="Add file"
@@ -152,6 +154,7 @@ export default function FileAndFolder({ item }) {
                 onClick={() => {
                   setNewFileFolderDialog(true);
                   setNewFileOrFolder("folder");
+                  setMode("create");
                 }}
                 className="p-1 text-gray-500 hover:text-green-600 rounded-full hover:bg-green-100 transition-colors duration-200"
                 title="Add folder"
@@ -161,7 +164,11 @@ export default function FileAndFolder({ item }) {
             </>
           )}
           <button
-            // onClick={() => onEdit(item._id)}
+            onClick={() => {
+              setNewFileFolderDialog(true);
+              setNewFileOrFolder(item.type);
+              setMode("edit");
+            }}
             className="p-1 text-green-500 rounded-full bg-green-300 transition-colors duration-200"
             title="Edit"
           >
@@ -189,6 +196,7 @@ export default function FileAndFolder({ item }) {
       {newFileFolderDialog && (
         <AddFileOrFolder
           item={item}
+          mode={mode}
           isFolder={newFileOrFolder === "folder"}
           isOpen={newFileFolderDialog}
           onClose={setNewFileFolderDialog}

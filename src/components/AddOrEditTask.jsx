@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "./ui/select";
 
-import { CalendarClock, Flag } from "lucide-react";
+import { CalendarClock, Flag, Loader } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -61,6 +61,7 @@ function AddOrEditTask({ todo, children }) {
             onSuccess: () => {
               toast.success("Task created successfully");
               reset();
+              onClose(false);
             },
             onError: (err) => {
               toast.error(err.message);
@@ -74,6 +75,7 @@ function AddOrEditTask({ todo, children }) {
             onSuccess: () => {
               toast.success("Task updated successfully");
               reset();
+              onClose(false);
             },
             onError: (err) => {
               toast.error(err.message);
@@ -83,8 +85,6 @@ function AddOrEditTask({ todo, children }) {
       }
     } catch (error) {
       console.error(error);
-    } finally {
-      onClose(false);
     }
   };
 
@@ -164,8 +164,8 @@ function AddOrEditTask({ todo, children }) {
               control={control}
               render={({ field }) => (
                 <Select
-                  onValueChange={(value) => field.onChange(value)} // Handle value change explicitly
-                  value={field.value} // Set the selected value
+                  onValueChange={(value) => field.onChange(value)}
+                  value={field.value}
                 >
                   <SelectTrigger className="w-[120px] border-gray-400 text-gray-500 font-semibold">
                     <SelectValue placeholder="Label" />
@@ -183,10 +183,22 @@ function AddOrEditTask({ todo, children }) {
               )}
             />
 
-            <Button type="submit" disabled={isCreatingTodo || isUpdatingTodo}>
-              {isCreatingTodo || isUpdatingTodo
-                ? "Saving changes ..."
-                : " Save changes"}
+            <Button
+              type="submit"
+              disabled={isCreatingTodo || isUpdatingTodo}
+              className={`${
+                isCreatingTodo || isUpdatingTodo
+                  ? "cursor-wait"
+                  : "cursor-pointer"
+              } flex gap-2`}
+            >
+              {isCreatingTodo || isUpdatingTodo ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                ""
+              )}
+
+              {isCreatingTodo || isUpdatingTodo ? "Saving" : " Save changes"}
             </Button>
           </div>
         </form>

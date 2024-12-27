@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { DiamondPlus, MusicIcon } from "lucide-react";
+import { DiamondPlus, Loader, MusicIcon } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -147,6 +147,7 @@ export default function Uploader() {
         className="w-full mt-4"
         disabled={!file || isUploadingSong}
       >
+        {isUploadingSong && <Loader className="w-4 h-4 animate-spin mr-2" />}
         {isUploadingSong ? "Please Wait ..." : "Upload Music"}
       </Button>
       {audioUrl && <audio ref={audioRef} src={audioUrl} className="hidden" />}

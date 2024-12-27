@@ -26,6 +26,7 @@ import {
 } from "../../hooks/expense/useExpense";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { Loader } from "lucide-react";
 
 function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
   const { addExpense, isAddingExpense } = useAddExpense();
@@ -61,6 +62,7 @@ function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
               predicate: (query) => query.queryKey[0] === "expense",
             });
             queryClient.invalidateQueries({ queryKey: ["monthlyExpenses"] });
+            queryClient.invalidateQueries({ queryKey: ["expenseSummary"] });
             onClose(false);
             reset();
           },
@@ -138,8 +140,15 @@ function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
               placeholder="Type your expense description here."
               id="description"
               className="col-span-3"
-              {...register("description")}
+              {...register("description", {
+                required: "Description is required",
+              })}
             />
+            {errors.description && (
+              <p className="text-red-400 text-xs">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -155,7 +164,7 @@ function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
               {...register("amount", { required: "Amount is required" })}
             />
             {errors.amount && (
-              <p className="text-red-400 text-sm">{errors.amount.message}</p>
+              <p className="text-red-400 text-xs">{errors.amount.message}</p>
             )}
           </div>
 
@@ -173,7 +182,7 @@ function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
               onChange={(e) => setValue("date", e.target.value)} // Handle change explicitly
             />
             {errors.date && (
-              <p className="text-red-400 text-sm">{errors.date.message}</p>
+              <p className="text-red-400 text-xs">{errors.date.message}</p>
             )}
           </div>
 
@@ -209,9 +218,13 @@ function ExpenseForm({ onClose, isOpen, expense, mode = "create" }) {
           <div className="flex flex-row-reverse">
             <Button
               type="submit"
+              className="flex gap-2"
               disabled={isAddingExpense || isUpdatingExpense}
             >
-              Save changes
+              {(isAddingExpense || isUpdatingExpense) && (
+                <Loader className="h-4 w-4 animate-spin" />
+              )}
+              {isAddingExpense || isUpdatingExpense ? "Saving" : "Save changes"}
             </Button>
           </div>
         </form>

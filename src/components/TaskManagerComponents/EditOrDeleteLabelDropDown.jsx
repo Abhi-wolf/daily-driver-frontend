@@ -25,6 +25,7 @@ function EditOrDeleteLabelDropDown({ labelId }) {
         { labelId },
         {
           onSuccess: () => {
+            setOpenConfirmDeleteDialog(false);
             toast.success("Label successfully deleted");
           },
           onError: (error) => {
@@ -35,8 +36,6 @@ function EditOrDeleteLabelDropDown({ labelId }) {
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");
-    } finally {
-      setOpenConfirmDeleteDialog(false);
     }
   };
 

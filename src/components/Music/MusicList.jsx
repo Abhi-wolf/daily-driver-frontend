@@ -25,6 +25,7 @@ function MusicList() {
         {
           onSuccess: () => {
             toast.success("Song successfully deleted");
+            setOpenConfirmDeleteDialog(false);
           },
           onError: (err) => {
             toast.error(err?.message);
@@ -34,8 +35,6 @@ function MusicList() {
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");
-    } finally {
-      setOpenConfirmDeleteDialog(false);
     }
   };
 

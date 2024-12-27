@@ -106,14 +106,16 @@ export async function updateFile({ data, fileId }) {
   }
 }
 
-export async function renameFile({ fileName, fileId }) {
+export async function renameFile({ newName, fileId }) {
+  console.log("NEW NAME = ", { newName, fileId });
+
   try {
     const res = await fetch(`${apiURL}/files/${fileId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ fileName }),
+      body: JSON.stringify({ newName }),
       credentials: "include",
     });
 

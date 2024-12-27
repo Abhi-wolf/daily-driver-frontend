@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Button } from "../ui/button";
 import {
@@ -13,45 +14,44 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetUserFileExplorer } from "../../hooks/fileExplorer/useGetFileExplorer";
-import { useCreateNewFile } from "../../hooks/fileExplorer/useFile";
-import { useCreateNewFolder } from "../../hooks/fileExplorer/useFolder";
+import {
+  useCreateNewFile,
+  useRenameFile,
+} from "../../hooks/fileExplorer/useFile";
+import {
+  useCreateNewFolder,
+  useRenameFolder,
+} from "../../hooks/fileExplorer/useFolder";
 
-function AddFileOrFolder({ item, isOpen, onClose, isFolder }) {
+function AddFileOrFolder({ item, isOpen, onClose, isFolder, mode = "create" }) {
   const queryClient = useQueryClient();
   const { createNewFolder, isCreatingNewFolder } = useCreateNewFolder();
   const { createNewFile, isCreatingNewFile } = useCreateNewFile();
+  const { renameFolder, isRenamingFolder } = useRenameFolder();
+  const { renameFile, isRenamingFile } = useRenameFile();
   const { data: explorerData } = useGetUserFileExplorer();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const onSubmit = async (newData) => {
-    // Fetch existing contents (folders and files)
-    const existingItems = explorerData || [];
+  } = useForm({
+    defaultValues: {
+      folderName: mode === "edit" && isFolder && item ? item.folderName : "",
+      fileName: mode === "edit" && !isFolder && item ? item.fileName : "",
+    },
+  });
 
-    // Check if a folder/file with the same name already exists
-    let duplicate;
-    if (isFolder) {
-      duplicate = existingItems?.some((fol) =>
-        fol.type === "folder"
-          ? fol.folderName.toLowerCase() === newData.folderName.toLowerCase()
-          : fol.fileName.toLowerCase() === newData.folderName.toLowerCase()
-      );
-    } else {
-      duplicate = existingItems?.some((file) =>
-        file.type === "folder"
-          ? file.folderName.toLowerCase() === newData.fileName.toLowerCase()
-          : file.fileName.toLowerCase() === newData.fileName.toLowerCase()
-      );
-    }
+  const isDisable = () => {
+    return (
+      isCreatingNewFile ||
+      isCreatingNewFolder ||
+      isRenamingFile ||
+      isRenamingFolder
+    );
+  };
 
-    if (duplicate) {
-      toast.error("A file or folder with this name already exists.");
-      return;
-    }
-
+  const handleCreateNewFileFolder = async (newData) => {
     try {
       newData = { ...newData, parentFolder: item ? item._id : null };
 
@@ -97,7 +97,88 @@ function AddFileOrFolder({ item, isOpen, onClose, isFolder }) {
         );
       }
     } catch (error) {
-      // console.log("AddFileOrFolder error = ", error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  const handleRenameFileFolder = async (newData) => {
+    const newName = isFolder ? newData.folderName : newData.fileName;
+    console.log("newData = ", newData);
+
+    try {
+      if (isFolder) {
+        renameFolder(
+          { newName, folderId: item._id },
+          {
+            onSuccess: () => {
+              toast.success("Folder renamed successfully");
+              onClose(false);
+              if (item?.parentFolder) {
+                queryClient.invalidateQueries({
+                  queryKey: ["folder", item?.parentFolder],
+                });
+              } else {
+                queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+              }
+            },
+            onError: (error) => {
+              toast.error(error.message);
+            },
+          }
+        );
+      } else {
+        renameFile(
+          { newName, fileId: item._id },
+          {
+            onSuccess: () => {
+              toast.success("File renamed successfully");
+              if (item?.parentFolder) {
+                onClose(false);
+                queryClient.invalidateQueries({
+                  queryKey: ["folder", item?.parentFolder],
+                });
+              } else {
+                queryClient.invalidateQueries({ queryKey: ["fileExplorer"] });
+              }
+            },
+            onError: (error) => {
+              toast.error(error.message);
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onSubmit = async (newData) => {
+    // Fetch existing contents (folders and files)
+    const existingItems = explorerData || [];
+
+    // Check if a folder/file with the same name already exists
+    let duplicate;
+    if (isFolder) {
+      duplicate = existingItems?.some((fol) =>
+        fol.type === "folder"
+          ? fol.folderName.toLowerCase() === newData.folderName.toLowerCase()
+          : fol.fileName.toLowerCase() === newData.folderName.toLowerCase()
+      );
+    } else {
+      duplicate = existingItems?.some((file) =>
+        file.type === "folder"
+          ? file.folderName.toLowerCase() === newData.fileName.toLowerCase()
+          : file.fileName.toLowerCase() === newData.fileName.toLowerCase()
+      );
+    }
+
+    if (duplicate) {
+      toast.error("A file or folder with this name already exists.");
+      return;
+    } else if (mode === "create") {
+      await handleCreateNewFileFolder(newData);
+    } else if (mode === "edit" && item) {
+      await handleRenameFileFolder(newData);
     }
   };
 
@@ -106,7 +187,9 @@ function AddFileOrFolder({ item, isOpen, onClose, isFolder }) {
       <DialogContent className="sm:max-w-[425px] p-8">
         <DialogHeader>
           <DialogTitle>
-            Create a new {isFolder ? "folder" : "file"}{" "}
+            {mode === "create"
+              ? `Create a new ${isFolder ? "folder" : "file"}`
+              : `Rename ${isFolder ? "folder" : "file"}`}
           </DialogTitle>
           <DialogDescription>
             This new {isFolder ? "folder" : "file"} will be created in the root
@@ -125,7 +208,7 @@ function AddFileOrFolder({ item, isOpen, onClose, isFolder }) {
             <Input
               id={isFolder ? "folderName" : "fileName"}
               className="col-span-3"
-              disabled={isCreatingNewFile || isCreatingNewFolder}
+              disabled={isDisable}
               {...register(isFolder ? "folderName" : "fileName", {
                 required: true,
               })}
@@ -135,10 +218,7 @@ function AddFileOrFolder({ item, isOpen, onClose, isFolder }) {
               <span className="text-red-400 my-1">Name is required.</span>
             )}
           </div>
-          <Button
-            type="submit"
-            disabled={isCreatingNewFile || isCreatingNewFolder}
-          >
+          <Button type="submit" disabled={isDisable}>
             Save changes
           </Button>
         </form>

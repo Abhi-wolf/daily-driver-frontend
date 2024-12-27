@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Trash } from "lucide-react";
+import { Loader, Trash } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,8 +29,8 @@ function ConfirmDeleteDialog({ open, handleDelete, isPending, onClose }) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently delete this data
+            from our servers. Please think carefully before moving forward.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -41,6 +41,7 @@ function ConfirmDeleteDialog({ open, handleDelete, isPending, onClose }) {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction disabled={isPending} onClick={handleDelete}>
+            {isPending && <Loader className="w-4 h-4 animate-spin" />}
             {isPending ? "Deleting ..." : "Continue"}
           </AlertDialogAction>
         </AlertDialogFooter>

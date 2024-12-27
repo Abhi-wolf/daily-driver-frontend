@@ -28,6 +28,8 @@ function EditDeleteProjectDropDown({ projectId }) {
         {
           onSuccess: () => {
             toast.success("Project successfully deleted");
+            setOpenConfirmDeleteDialog(false);
+
             navigate("/tasksmanager/todos");
           },
           onError: (error) => {
@@ -38,8 +40,6 @@ function EditDeleteProjectDropDown({ projectId }) {
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");
-    } finally {
-      setOpenConfirmDeleteDialog(false);
     }
   };
 

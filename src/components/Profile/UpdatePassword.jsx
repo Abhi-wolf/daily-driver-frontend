@@ -47,6 +47,8 @@ function UpdatePassword() {
         {
           onSuccess: () => {
             toast.success("Your password has been successfully changed.");
+            setIsChangingPassword(false);
+            reset();
           },
           onError: (err) => {
             console.error(err.message);
@@ -59,9 +61,6 @@ function UpdatePassword() {
     } catch (error) {
       console.error("Error updating password:", error);
       toast.error("Failed to update password. Please try again");
-    } finally {
-      setIsChangingPassword(false);
-      reset();
     }
   };
 

@@ -5,6 +5,7 @@ import {
   getFile,
   restoreFile as restoreFileApi,
   updateFile,
+  renameFile as renameFileApi,
   createNewFile as createNewFileApi,
   permanentDeleteFile as permanentDeleteFileApi,
 } from "../../features/apiFile";
@@ -51,7 +52,7 @@ export function useGetDeletedFiles() {
 
 export function useRenameFile() {
   const { mutate: renameFile, isPending: isRenamingFile } = useMutation({
-    mutationFn: updateFile,
+    mutationFn: renameFileApi,
   });
 
   return { renameFile, isRenamingFile };

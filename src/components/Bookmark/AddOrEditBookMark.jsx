@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-import { Plus } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -51,6 +51,7 @@ function AddOrEditBookMark({ bookmark, children }) {
           {
             onSuccess: () => {
               toast.success("Bookmark added successfully");
+              onClose(false);
               reset();
             },
             onError: (err) => {
@@ -61,8 +62,6 @@ function AddOrEditBookMark({ bookmark, children }) {
         );
       } catch (error) {
         console.error(error);
-      } finally {
-        onClose(false);
       }
     } else {
       try {
@@ -72,6 +71,7 @@ function AddOrEditBookMark({ bookmark, children }) {
             onSuccess: () => {
               toast.success("Bookmark updated successfully");
               reset();
+              onClose(false);
             },
             onError: (err) => {
               console.error(err.message);
@@ -81,8 +81,6 @@ function AddOrEditBookMark({ bookmark, children }) {
         );
       } catch (error) {
         console.error(error);
-      } finally {
-        onClose(false);
       }
     }
   };
@@ -194,7 +192,12 @@ function AddOrEditBookMark({ bookmark, children }) {
               type="submit"
               disabled={isAddingBookmark || isUpdatingBookmark}
             >
-              Save Bookmark
+              {(isAddingBookmark || isUpdatingBookmark) && (
+                <Loader className="w-4 h-4 animate-spin mr-2" />
+              )}
+              {isAddingBookmark || isUpdatingBookmark
+                ? "Saving..."
+                : "Save Bookmark"}
             </Button>
           </div>
         </form>

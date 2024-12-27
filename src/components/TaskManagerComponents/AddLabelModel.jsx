@@ -12,7 +12,7 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { PlusCircle } from "lucide-react";
+import { Loader, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAddLabel } from "../../hooks/labels/useAddLabel";
@@ -42,8 +42,6 @@ function AddLabelModel() {
           },
         }
       );
-
-      onClose(false);
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -83,7 +81,8 @@ function AddLabelModel() {
           </div>
 
           <Button type="submit" disabled={isPending}>
-            Create Label
+            {isPending && <Loader className="w-4 h-4 animate-spin mr-2" />}
+            {isPending ? "Creating..." : "Create Label"}
           </Button>
         </form>
       </DialogContent>

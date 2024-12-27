@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUpdateBudget } from "../../hooks/expense/useBudget";
 import { useEffect } from "react";
+import { Loader } from "lucide-react";
 
 function BudgetForm({ onClose, isOpen, budget }) {
   const queryClient = useQueryClient();
@@ -102,8 +103,13 @@ function BudgetForm({ onClose, isOpen, budget }) {
           </div>
 
           <div className="flex flex-row-reverse">
-            <Button type="submit" disabled={isUpdatingBudget}>
-              Save changes
+            <Button
+              type="submit"
+              disabled={isUpdatingBudget}
+              className="flex gap-2"
+            >
+              {isUpdatingBudget && <Loader className="w-4 h-4 animate-spin" />}
+              {isUpdatingBudget ? "Saving..." : "Save changes"}
             </Button>
           </div>
         </form>

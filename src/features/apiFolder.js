@@ -27,8 +27,6 @@ export async function getFolders() {
   }
 }
 export async function getFolder(folderId) {
-  // return null;
-
   try {
     const res = await fetch(`${apiURL}/folders/${folderId}`, {
       method: "GET",
@@ -82,6 +80,8 @@ export async function createNewFolder({ newData }) {
 }
 
 export async function renameFolder({ newName, folderId }) {
+  console.log({ newName, folderId });
+  // return null;
   try {
     const res = await fetch(`${apiURL}/folders/${folderId}`, {
       method: "PATCH",

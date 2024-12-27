@@ -15,6 +15,7 @@ import { Textarea } from "../ui/textarea";
 import { convertToISOFormat, transformDate } from "../../lib/utils";
 import { Button } from "../ui/button";
 import { useUpdateEvent } from "../../hooks/events/useUpdateEvent";
+import { Loader } from "lucide-react";
 
 /* eslint-disable react/prop-types */
 export default function EditOrDeleteEventDialog({ isOpen, onClose, event }) {
@@ -55,18 +56,15 @@ export default function EditOrDeleteEventDialog({ isOpen, onClose, event }) {
         {
           onSuccess: () => {
             toast.success("Event updated successfully");
+            onClose(false);
           },
           onError: (err) => {
             toast.error(err.message);
-          },
-          onSettled: () => {
-            onClose(false);
           },
         }
       );
     } catch (err) {
       console.error(err);
-      onClose(false);
       toast.error("Something went wrong.");
     }
   };
@@ -84,14 +82,13 @@ export default function EditOrDeleteEventDialog({ isOpen, onClose, event }) {
         {
           onSuccess: () => {
             toast.success("Event deleted successfully");
+            onClose(false);
           },
         }
       );
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong.");
-    } finally {
-      onClose(false);
     }
   };
 
@@ -181,7 +178,8 @@ export default function EditOrDeleteEventDialog({ isOpen, onClose, event }) {
               disabled={isDeleting || isUpdatingEvent}
               onClick={handleDelete}
             >
-              Delete event
+              {isDeleting && <Loader className="w-4 h-4 animate-spin mr-2" />}
+              {isDeleting ? "Deleting..." : "Delete Event"}
             </Button>
 
             <Button
@@ -189,7 +187,10 @@ export default function EditOrDeleteEventDialog({ isOpen, onClose, event }) {
               disabled={isUpdatingEvent || isDeleting}
               className="justify-self-end"
             >
-              Save changes
+              {isUpdatingEvent && (
+                <Loader className="w-4 h-4 animate-spin mr-2" />
+              )}
+              {isUpdatingEvent ? "Saving..." : "Save changes"}
             </Button>
           </div>
         </form>

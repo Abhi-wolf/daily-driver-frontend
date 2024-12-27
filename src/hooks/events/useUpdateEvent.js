@@ -4,7 +4,7 @@ import { updateEvent as updateEventApi } from "../../features/apiEvent";
 export function useUpdateEvent() {
   const queryClient = useQueryClient();
 
-  const { mutate: updateEvent, isUpdatingEvent } = useMutation({
+  const { mutate: updateEvent, isPending: isUpdatingEvent } = useMutation({
     mutationFn: updateEventApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["events"] });
