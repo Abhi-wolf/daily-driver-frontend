@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteFile as deleteFileApi,
   getDeletedFiles,
@@ -58,10 +58,18 @@ export function useRenameFile() {
   return { renameFile, isRenamingFile };
 }
 
-export function useFileUpdateContent() {
+export function useFileUpdateContent(fileId) {
+  const queryClient = useQueryClient();
+
   const { mutate: updateFileContent, isPending: isUpdatingFileContent } =
     useMutation({
       mutationFn: updateFile,
+      onSuccess: () => {
+        console.log("File content updated successfully", fileId);
+        queryClient.invalidateQueries({
+          queryKey: ["file", fileId],
+        });
+      },
     });
 
   return { updateFileContent, isUpdatingFileContent };

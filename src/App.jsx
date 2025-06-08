@@ -38,7 +38,7 @@ function App() {
           <Route index element={<CalendarPage />} />
 
           {/* Explicitly define /calendar route */}
-          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/fileExplorer" element={<Files />}>
             <Route index element={<InitialExplorer />} />

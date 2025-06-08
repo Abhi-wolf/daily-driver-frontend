@@ -17,8 +17,6 @@ export function useAddFeedback() {
         },
       });
 
-      console.log("RESPONSE = ", res);
-
       return res;
     },
     onSuccess: () => {
